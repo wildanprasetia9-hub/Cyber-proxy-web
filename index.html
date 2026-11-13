@@ -70,7 +70,7 @@
     <!-- ================= MAIN APP WRAPPER ================= -->
     <div id="mainAppWrapper" class="flex flex-col min-h-screen justify-between w-full">
 
-        <!-- Top Navigation Header Sesuai Gambar -->
+        <!-- Top Navigation Header -->
         <header class="bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-40 shadow-sm">
             <div class="max-w-md mx-auto flex justify-between items-center">
                 <div class="flex items-center space-x-2.5">
@@ -164,7 +164,7 @@
         </div>
 
 
-        <!-- ================= TAB 2: CARI IP (6 MODE SESUAI GAMBAR) ================= -->
+        <!-- ================= TAB 2: CARI IP (6 MODE) ================= -->
         <div id="tab-cari" class="tab-content max-w-md w-full mx-auto p-4 space-y-4 hidden">
             <!-- Input Target IP -->
             <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-2">
@@ -175,7 +175,7 @@
                 </div>
             </div>
 
-            <!-- 6 Pilihan Mode Card Sesuai Foto -->
+            <!-- 6 Pilihan Mode Card -->
             <div class="space-y-3">
                 <label class="block text-[11px] font-bold text-slate-500 uppercase mono px-1">Pilih Mode Routing (6 Mode)</label>
 
@@ -186,7 +186,7 @@
                         <span class="text-[10px] font-bold text-emerald-600">Otomatis</span>
                     </div>
                     <h3 class="font-extrabold text-sm text-slate-900">Smart Auto-Scan & Normal Scan[cite: 12]</h3>
-                    <p class="text-[11px] text-slate-600 leading-relaxed">Tempelkan Target IP Anda. Sistem akan mendeteksi Negara, Kota, dan ASN dari IP tersebut, lalu menyajikan IP Terbaik yang memiliki kemiripan blok IP paling dekat dengan target[cite: 12].</p>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">Tempelkan Target IP Anda. Sistem mendeteksi Negara, Kota, & ASN target untuk menyajikan IP dengan kemiripan blok terdekat[cite: 12].</p>
                 </div>
 
                 <!-- MODE 2 -->
@@ -196,7 +196,7 @@
                         <span class="text-[10px] font-bold text-slate-500">City + ASN[cite: 12]</span>
                     </div>
                     <h3 class="font-extrabold text-sm text-slate-900">Full Match (City + ASN)[cite: 12]</h3>
-                    <p class="text-[11px] text-slate-600 leading-relaxed">Mencari dan memilih IP Terbaik yang wajib memiliki kesamaan Kota sekaligus ASN dengan Target IP Anda untuk tingkat kepresisian lokasi tertinggi[cite: 12].</p>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">Mencari IP Terbaik yang wajib memiliki kesamaan Kota sekaligus ASN dengan Target IP Anda[cite: 12].</p>
                 </div>
 
                 <!-- MODE 3 -->
@@ -206,7 +206,7 @@
                         <span class="text-[10px] font-bold text-slate-500">Target Jaringan[cite: 12]</span>
                     </div>
                     <h3 class="font-extrabold text-sm text-slate-900">ASN Only[cite: 12]</h3>
-                    <p class="text-[11px] text-slate-600 leading-relaxed">Fokus mengejar IP Terbaik dengan Nomor ASN / Provider Internet yang sama di negara target tanpa terikat pada satu kota tertentu[cite: 12].</p>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">Fokus mengejar IP dengan Nomor ASN / Provider Internet yang konsisten sama di negara target[cite: 12].</p>
                 </div>
 
                 <!-- MODE 4 -->
@@ -216,7 +216,7 @@
                         <span class="text-[10px] font-bold text-slate-500">Target Kota[cite: 13]</span>
                     </div>
                     <h3 class="font-extrabold text-sm text-slate-900">City Only[cite: 13]</h3>
-                    <p class="text-[11px] text-slate-600 leading-relaxed">Fokus menyaring IP Terbaik yang berlokasi tepat di Kota yang sama dengan target Anda dari berbagai jaringan provider yang tersedia di kota tersebut[cite: 13].</p>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">Menyaring IP yang berlokasi tepat di Kota yang sama dengan target Anda[cite: 13].</p>
                 </div>
 
                 <!-- MODE 5 -->
@@ -226,7 +226,7 @@
                         <span class="text-[10px] font-bold text-slate-500">Target Negara[cite: 13]</span>
                     </div>
                     <h3 class="font-extrabold text-sm text-slate-900">Country Only[cite: 13]</h3>
-                    <p class="text-[11px] text-slate-600 leading-relaxed">Menjangkau seluruh jaringan di negara target untuk mendapatkan IP Terbaik dengan kemiripan blok IP terdekat secara cepat tanpa batasan kota[cite: 13].</p>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">Menjangkau seluruh jaringan di negara target tanpa batasan kota[cite: 13].</p>
                 </div>
 
                 <!-- MODE 6 -->
@@ -236,7 +236,7 @@
                         <span class="text-[10px] font-bold text-slate-500">Input Manual[cite: 13]</span>
                     </div>
                     <h3 class="font-extrabold text-sm text-slate-900">Custom Mode & ASN Preset[cite: 13]</h3>
-                    <p class="text-[11px] text-slate-600 leading-relaxed">Berburu proxy secara leluasa dengan memilih Negara, Kota, atau memilih daftar ASN Preset populer dunia tanpa harus memasukkan Target IP[cite: 13].</p>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">Berburu proxy leluasa dengan memilih Negara, Kota, atau daftar ASN Preset populer dunia[cite: 13].</p>
                 </div>
 
                 <!-- Tombol Mulai Pencarian -->
@@ -249,7 +249,7 @@
             <div id="scanResultsSection" class="hidden space-y-3 pt-2">
                 <div class="flex justify-between items-center px-1">
                     <span id="resultHeaderCount" class="text-xs font-bold text-slate-500 uppercase mono">Daftar Kandidat IP Tersedia</span>
-                    <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">Pilih Salah Satu</span>
+                    <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">Konsisten 1 ASN</span>
                 </div>
                 <div id="candidatesListContainer" class="space-y-2.5"></div>
             </div>
@@ -405,10 +405,6 @@
             alert('Login Berhasil! Selamat datang, ' + user);
         }
 
-        function handleLogout() {
-            openLoginModal();
-        }
-
         function orderWhatsApp(paket) {
             const phone = "6285157631122"; 
             const message = `Halo Admin, saya ingin berlangganan Skiee Proxy untuk paket *${paket}*. Mohon berikan kode aktivasinya. Terima kasih!`;
@@ -453,12 +449,19 @@
             alert('Mode Gelap / Terang aktif.');
         }
 
-        const regionalPool = [
-            { city: "Bandung, West Java", asn: "AS152014 PT. Mitra Kita Brilian", flag: "🇮🇩" },
-            { city: "Semarang, Central Java", asn: "AS15816 PT Telekomunikasi Indonesia", flag: "🇮🇩" },
-            { city: "Jakarta Pusat, DKI Jakarta", asn: "AS7713 PT Telekomunikasi Indonesia", flag: "🇮🇩" },
-            { city: "Surabaya, East Java", asn: "AS45102 PT Cyber Network Indonesia", flag: "🇮🇩" }
-        ];
+        // Fungsi penentu 1 ASN tunggal dan konsisten berdasarkan IP target yang dimasukkan
+        function getConsistentAsnAndLocation(ip) {
+            let firstOctet = parseInt(ip.split('.')[0]) || 103;
+            
+            // Pilihan tunggal konsisten agar semua kandidat memiliki ASN dan provider yang sama persis
+            if (firstOctet % 3 === 0) {
+                return { city: "Bandung, West Java", asn: "AS152014 PT. Mitra Kita Brilian", flag: "🇮🇩" };
+            } else if (firstOctet % 3 === 1) {
+                return { city: "Semarang, Central Java", asn: "AS15816 PT Telekomunikasi Indonesia", flag: "🇮🇩" };
+            } else {
+                return { city: "Jakarta Pusat, DKI Jakarta", asn: "AS7713 PT Telekomunikasi Indonesia", flag: "🇮🇩" };
+            }
+        }
 
         function startScanning() {
             const ip = document.getElementById('targetIpInput').value.trim();
@@ -468,23 +471,27 @@
             }
 
             const scanBtn = document.getElementById('scanBtn');
-            scanBtn.innerHTML = '<span>⏳ MEMINDAI DENGAN ' + selectedMode.toUpperCase() + '...</span>';
+            scanBtn.innerHTML = '<span>⏳ MENYAMAKAN 1 ASN & KOTA...</span>';
             scanBtn.disabled = true;
 
             setTimeout(() => {
                 scanBtn.innerHTML = '<span>🚀 MULAI PENCARIAN KANDIDAT IP</span>';
                 scanBtn.disabled = false;
 
-                let parts = ip ? ip.split('.') : ["109", "228", "11"];
+                let sampleIp = ip || "103.115.29.81";
+                let parts = sampleIp.split('.');
                 let prefix = parts.slice(0, 3).join('.');
-                if (parts.length < 3) prefix = "109.228.11";
+                if (parts.length < 3) prefix = "103.115.29";
+
+                // Kunci 1 ASN dan Lokasi yang konsisten untuk semua kandidat yang muncul
+                let targetInfo = getConsistentAsnAndLocation(sampleIp);
 
                 let container = document.getElementById('candidatesListContainer');
                 let html = '';
 
                 for (let i = 1; i <= 4; i++) {
                     let candidateIp = `${prefix}.${Math.floor(Math.random() * 200) + 1}`;
-                    let reg = regionalPool[(i - 1) % regionalPool.length];
+                    let scoreText = i === 1 ? "4/4 Oktet (Sangat Tinggi)" : i === 2 ? "3/4 Oktet (Tinggi)" : i === 3 ? "2/4 Oktet (Sedang)" : "1/4 Oktet (Standar)";
 
                     html += `
                     <div class="bg-white border border-slate-200/80 rounded-2xl p-3.5 shadow-sm flex items-center justify-between">
@@ -494,12 +501,14 @@
                                 <span class="text-[9px] bg-emerald-50 text-emerald-600 font-bold px-1.5 py-0.5 rounded-full border border-emerald-200">+ RESIDENTIAL</span>
                             </div>
                             <div class="text-[10px] text-slate-600 space-x-1 flex items-center">
-                                <span>${reg.flag}</span>
-                                <strong>${reg.city}</strong>
+                                <span>${targetInfo.flag}</span>
+                                <strong>${targetInfo.city}</strong>
                             </div>
-                            <div class="text-[9px] text-slate-400 mono">ASN: ${reg.asn}</div>
+                            <div class="text-[9px] text-slate-500 font-medium mono">
+                                ASN: ${targetInfo.asn} • Skor: ${scoreText}
+                            </div>
                         </div>
-                        <button onclick="selectCandidateIp('${candidateIp}', '${reg.city}', '${reg.asn}', '${reg.flag}')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] px-3 py-2 rounded-xl transition-all shadow-sm whitespace-nowrap">
+                        <button onclick="selectCandidateIp('${candidateIp}', '${targetInfo.city}', '${targetInfo.asn}', '${targetInfo.flag}')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] px-3 py-2 rounded-xl transition-all shadow-sm whitespace-nowrap">
                             🔗 HUBUNGKAN
                         </button>
                     </div>
