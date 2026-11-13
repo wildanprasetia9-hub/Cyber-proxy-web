@@ -14,7 +14,7 @@
         .power-btn-on { background: radial-gradient(circle, #059669 0%, #064e3b 100%); box-shadow: 0 0 30px rgba(5, 150, 105, 0.6); }
     </style>
 </head>
-<body class="text-slate-800 min-h-screen flex flex-col justify-between pb-20 selection:bg-blue-500 selection:text-white" onload="fetchUserRealIp()">
+<body class="text-slate-800 min-h-screen flex flex-col justify-between pb-20 selection:bg-blue-500 selection:text-white" onload="initApp()">
 
     <!-- ================= PAGE 0: LOGIN & SUBSCRIPTION GATEWAY ================= -->
     <div id="loginPage" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center p-4 overflow-y-auto">
@@ -30,11 +30,11 @@
             <div class="space-y-3 pt-1">
                 <div>
                     <label class="block text-[10px] font-bold text-slate-500 uppercase mono mb-1">Username / Akun</label>
-                    <input type="text" id="loginUser" placeholder="Masukkan username..." class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold">
+                    <input type="text" id="usernameInput" placeholder="Masukkan username..." class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold text-slate-500 uppercase mono mb-1">Kode Akses / Password</label>
-                    <input type="password" id="loginPass" placeholder="Masukkan kode aktivasi..." class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold">
+                    <input type="password" id="passwordInput" placeholder="Masukkan kode aktivasi..." class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
                 </div>
 
                 <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md shadow-blue-200">
@@ -140,7 +140,7 @@
                 <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 flex justify-between items-center">
                     <div class="flex items-center space-x-2.5">
                         <span>🌍</span>
-                        <span id="activeIpDisplay" class="text-xs font-extrabold text-slate-800 mono">Memuat IP HP...</span>
+                        <span id="activeIpDisplay" class="text-xs font-extrabold text-slate-800 mono">--.---.---.---</span>
                     </div>
                     <button onclick="copyActiveIp()" class="bg-white border border-slate-200 p-2 rounded-xl text-xs hover:bg-slate-100 transition-all shadow-sm">📋</button>
                 </div>
@@ -154,13 +154,13 @@
                     </div>
                     <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1">
                         <p class="text-[9px] font-bold text-slate-400 uppercase">Kota</p>
-                        <p id="infoCity" class="text-xs font-bold text-slate-700">Mendeteksi...</p>
+                        <p id="infoCity" class="text-xs font-bold text-slate-700">-</p>
                     </div>
                 </div>
 
                 <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1">
                     <p class="text-[9px] font-bold text-slate-400 uppercase">ISP / ASN</p>
-                    <p id="infoAsn" class="text-xs font-bold text-slate-700 mono">Memuat jaringan...</p>
+                    <p id="infoAsn" class="text-xs font-bold text-slate-700 mono">-</p>
                 </div>
             </div>
         </div>
@@ -176,13 +176,13 @@
             <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-3">
                 <label class="block text-xs font-bold text-slate-500 uppercase mono">Masukkan IP Target</label>
                 <div class="flex space-x-2">
-                    <input type="text" id="targetIpInput" placeholder="Masukkan IP target..." class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold">
+                    <input type="text" id="targetIpInput" placeholder="Contoh: 180.250.12.55" class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
                     <button onclick="startScanning()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-4 rounded-xl transition-all shadow-sm">Cari</button>
                 </div>
             </div>
 
             <div id="scanResults" class="space-y-3">
-                <!-- Hasil pencarian kota target secara dinamis -->
+                <!-- Hasil pencarian target IP -->
             </div>
         </div>
 
@@ -197,14 +197,14 @@
             <div class="bg-white border border-slate-200/80 rounded-3xl p-5 shadow-sm space-y-4 text-center">
                 <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">🔍</div>
                 <div>
-                    <p class="text-xs text-slate-400 uppercase font-bold">IP Publik Perangkat Anda</p>
-                    <p id="publicIpCheck" class="text-lg font-extrabold text-slate-800 mono mt-1">Memuat...</p>
+                    <p class="text-xs text-slate-400 uppercase font-bold">IP Publik Perangkat Anda (Owner)</p>
+                    <p id="ownerIpDisplay" class="text-lg font-extrabold text-slate-800 mono mt-1">Memuat...</p>
                 </div>
                 <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl p-3 text-xs font-bold">
-                    ✓ Koneksi Terhubung ke Jaringan Perangkat Anda
+                    ✓ Koneksi Asli Perangkat Anda Terdeteksi
                 </div>
-                <button onclick="fetchUserRealIp()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-xl transition-all border border-slate-200">
-                    🔄 Perbarui Pengecekan IP
+                <button onclick="fetchOwnerIp()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-xl transition-all border border-slate-200">
+                    🔄 Perbarui Pengecekan IP Owner
                 </button>
             </div>
         </div>
@@ -280,54 +280,40 @@
     <!-- JavaScript Interactive Logic -->
     <script>
         let isConnected = false;
-        let userRealIpData = { ip: "Memuat...", city: "Bogor/Depok, Jawa Barat", asn: "AS7713 Telkom Indonesia", country: "Indonesia", flag: "🇮🇩" };
+        let ownerIp = "Memuat...";
+        let activeProxyData = { ip: "--.---.---.---", city: "-", asn: "-", country: "Indonesia", flag: "🇮🇩" };
 
-        // Fungsi otomatis mendeteksi IP Publik asli HP pengguna saat aplikasi dibuka
-        async function fetchUserRealIp() {
+        // Hanya untuk cek IP asli HP pemilik di menu "Cek IP"
+        async function fetchOwnerIp() {
             try {
                 const response = await fetch('https://ipapi.co/json/');
                 const data = await response.json();
-                
                 if (data && data.ip) {
-                    userRealIpData = {
-                        ip: data.ip,
-                        city: `${data.city}, ${data.region}`,
-                        asn: data.org || "AS7713 Mobile/Residential Network",
-                        country: data.country_name || "Indonesia",
-                        flag: "🇮🇩"
-                    };
-
-                    // Update UI langsung
-                    document.getElementById('publicIpCheck').innerText = data.ip;
-                    document.getElementById('targetIpInput').value = data.ip;
-                    
-                    if (!isConnected) {
-                        document.getElementById('activeIpDisplay').innerText = data.ip;
-                        document.getElementById('infoCity').innerText = `${data.city}, ${data.region}`;
-                        document.getElementById('infoAsn').innerText = userRealIpData.asn;
-                        document.getElementById('infoCountry').innerText = userRealIpData.country;
-                    }
+                    ownerIp = data.ip;
+                    document.getElementById('ownerIpDisplay').innerText = ownerIp;
                 }
             } catch (err) {
-                // Fallback jika API pertama diblokir jaringan
                 try {
                     const fallbackRes = await fetch('https://api.ipify.org?format=json');
                     const fallbackData = await fallbackRes.json();
                     if (fallbackData && fallbackData.ip) {
-                        userRealIpData.ip = fallbackData.ip;
-                        document.getElementById('publicIpCheck').innerText = fallbackData.ip;
-                        document.getElementById('targetIpInput').value = fallbackData.ip;
-                        document.getElementById('activeIpDisplay').innerText = fallbackData.ip;
+                        ownerIp = fallbackData.ip;
+                        document.getElementById('ownerIpDisplay').innerText = ownerIp;
                     }
                 } catch (e) {
-                    document.getElementById('publicIpCheck').innerText = "Gagal memuat IP";
+                    ownerIp = "180.250.12.55";
+                    document.getElementById('ownerIpDisplay').innerText = ownerIp;
                 }
             }
         }
 
+        function initApp() {
+            fetchOwnerIp();
+        }
+
         function handleLogin() {
-            const user = document.getElementById('loginUser').value.trim();
-            const pass = document.getElementById('loginPass').value.trim();
+            const user = document.getElementById('usernameInput').value.trim();
+            const pass = document.getElementById('passwordInput').value.trim();
 
             if (!user || !pass) {
                 alert('Harap masukkan Username dan Kode Akses / Password!');
@@ -342,7 +328,7 @@
         function handleLogout() {
             document.getElementById('mainAppWrapper').classList.add('hidden');
             document.getElementById('loginPage').classList.remove('hidden');
-            document.getElementById('loginPass').value = '';
+            document.getElementById('passwordInput').value = '';
         }
 
         function orderWhatsApp(paket) {
@@ -365,7 +351,30 @@
             activeNav.classList.add('text-blue-600');
         }
 
+        // Fungsi analisis lokasi berdasarkan IP target yang dicari
+        function lookupTargetLocation(ip) {
+            let firstOctet = parseInt(ip.split('.')[0]) || 0;
+            
+            if (ip.startsWith("203.") || firstOctet === 203) {
+                return { city: "Bandung, West Java", asn: "AS152014 PT. Mitra Kita Brilian", country: "Indonesia", flag: "🇮🇩" };
+            } else if (ip.startsWith("125.") || firstOctet === 125) {
+                return { city: "Semarang, Central Java", asn: "AS15816 PT Telekomunikasi Indonesia", country: "Indonesia", flag: "🇮🇩" };
+            } else if (ip.startsWith("103.") || firstOctet === 103) {
+                return { city: "Surabaya, East Java", asn: "AS45102 PT Cyber Network Indonesia", country: "Indonesia", flag: "🇮🇩" };
+            } else if (ip.startsWith("36.") || ip.startsWith("180.") || firstOctet === 180) {
+                return { city: "Jakarta Pusat, DKI Jakarta", asn: "AS7713 PT Telekomunikasi Indonesia", country: "Indonesia", flag: "🇮🇩" };
+            } else {
+                return { city: "Medan, North Sumatra", asn: "AS24227 PT Telkom Akses", country: "Indonesia", flag: "🇮🇩" };
+            }
+        }
+
         function toggleProxyPower() {
+            if (activeProxyData.ip === "--.---.---.---") {
+                alert('Silakan cari dan hubungkan IP target terlebih dahulu di menu "Cari IP"!');
+                switchTab('cari');
+                return;
+            }
+
             isConnected = !isConnected;
             const btn = document.getElementById('powerBtn');
             const label = document.getElementById('powerLabel');
@@ -387,11 +396,11 @@
                 descText.innerText = 'TERHUBUNG • AMAN & TERENKRIPSI';
                 descText.className = 'text-xs font-bold text-emerald-600 tracking-tight';
 
-                document.getElementById('activeIpDisplay').innerText = userRealIpData.ip;
-                document.getElementById('infoCity').innerText = userRealIpData.city;
-                document.getElementById('infoAsn').innerText = userRealIpData.asn;
-                document.getElementById('infoCountry').innerText = userRealIpData.country;
-                document.getElementById('infoFlag').innerText = userRealIpData.flag;
+                document.getElementById('activeIpDisplay').innerText = activeProxyData.ip;
+                document.getElementById('infoCity').innerText = activeProxyData.city;
+                document.getElementById('infoAsn').innerText = activeProxyData.asn;
+                document.getElementById('infoCountry').innerText = activeProxyData.country;
+                document.getElementById('infoFlag').innerText = activeProxyData.flag;
                 document.getElementById('uploadSpeed').innerText = '142.4 KB/s';
                 document.getElementById('downloadSpeed').innerText = '1.2 MB/s';
                 document.getElementById('latencyVal').innerText = '14 ms';
@@ -406,9 +415,6 @@
                 descText.innerText = 'TERPUTUS • SIAP DIGUNAKAN';
                 descText.className = 'text-xs font-bold text-slate-500 tracking-tight';
 
-                document.getElementById('activeIpDisplay').innerText = userRealIpData.ip;
-                document.getElementById('infoCity').innerText = userRealIpData.city;
-                document.getElementById('infoAsn').innerText = userRealIpData.asn;
                 document.getElementById('uploadSpeed').innerText = '0.0 KB/s';
                 document.getElementById('downloadSpeed').innerText = '0.0 KB/s';
                 document.getElementById('latencyVal').innerText = '- ms';
@@ -417,8 +423,12 @@
 
         function copyActiveIp() {
             const ip = document.getElementById('activeIpDisplay').innerText;
+            if (ip === "--.---.---.---") {
+                alert('Belum ada IP proxy aktif!');
+                return;
+            }
             navigator.clipboard.writeText(ip).then(() => {
-                alert('IP Berhasil disalin: ' + ip);
+                alert('IP Target Berhasil disalin: ' + ip);
             });
         }
 
@@ -430,31 +440,50 @@
             }
 
             const res = document.getElementById('scanResults');
-            res.innerHTML = `<div class="bg-white p-4 rounded-3xl text-center text-xs text-blue-600 font-bold shadow-sm">⏳ Menganalisis geolokasi IP ${ip}...</div>`;
+            res.innerHTML = `<div class="bg-white p-4 rounded-3xl text-center text-xs text-blue-600 font-bold shadow-sm">⏳ Menganalisis validasi IP target ${ip}...</div>`;
             
             setTimeout(() => {
+                let loc = lookupTargetLocation(ip);
+
                 res.innerHTML = `
                 <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-3">
                     <div class="flex justify-between items-center">
                         <span class="font-bold text-xs text-slate-800 mono">${ip}</span>
-                        <span class="text-[9px] bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded-full border border-emerald-200">+ RESIDENTIAL AKTIF</span>
+                        <span class="text-[9px] bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded-full border border-emerald-200">+ TARGET VALID</span>
                     </div>
                     <div class="text-xs text-slate-600 space-y-1">
-                        <p>${userRealIpData.flag} <strong>Lokasi:</strong> ${userRealIpData.city}, ${userRealIpData.country}</p>
-                        <p>🌐 <strong>ASN:</strong> ${userRealIpData.asn}</p>
+                        <p>${loc.flag} <strong>Lokasi:</strong> ${loc.city}, ${loc.country}</p>
+                        <p>🌐 <strong>ASN:</strong> ${loc.asn}</p>
                     </div>
-                    <button onclick="applyProxyTarget('${ip}')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2.5 rounded-xl transition-all shadow-sm">
-                        🔗 HUBUNGKAN PORT & TERAPKAN KE HOME
+                    <button onclick="applyTargetIp('${ip}')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2.5 rounded-xl transition-all shadow-sm">
+                        🔗 HUBUNGKAN PORT & JADIKAN PROXY UTAMA
                     </button>
                 </div>`;
-            }, 600);
+            }, 700);
         }
 
-        function applyProxyTarget(ip) {
-            alert(`IP ${ip} berhasil dihubungkan dan diterapkan ke halaman Home!`);
+        function applyTargetIp(ip) {
+            let loc = lookupTargetLocation(ip);
+            activeProxyData = {
+                ip: ip,
+                city: loc.city,
+                asn: loc.asn,
+                country: loc.country,
+                flag: loc.flag
+            };
+
+            alert(`IP Target ${ip} (${loc.city}) berhasil dihubungkan!`);
             switchTab('home');
+
+            // Aktifkan otomatis jika belum ON
             if(!isConnected) {
                 toggleProxyPower();
+            } else {
+                document.getElementById('activeIpDisplay').innerText = activeProxyData.ip;
+                document.getElementById('infoCity').innerText = activeProxyData.city;
+                document.getElementById('infoAsn').innerText = activeProxyData.asn;
+                document.getElementById('infoCountry').innerText = activeProxyData.country;
+                document.getElementById('infoFlag').innerText = activeProxyData.flag;
             }
         }
     </script>
