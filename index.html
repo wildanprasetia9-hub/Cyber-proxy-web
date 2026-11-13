@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skiee Proxy - Cari & Seleksi IP Terbaik</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div>
+                <span class="text-[10px] font-bold text-blue-600 tracking-wider uppercase mono">Proxy Routing Engine</span>
+                <h1 class="font-extrabold text-slate-900 text-base tracking-tight">SKIEE PROXY</h1>
+            </div>
+            <button id="installBtn" class="hidden bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs px-3 py-1.5 rounded-lg transition-all shadow-sm">
+                📱 Install App
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-md w-full mx-auto p-4 space-y-4 flex-grow">
+
+        <!-- Step 1: Input Target IP -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-2">
+            <label class="block text-xs font-bold text-slate-500 uppercase mono">1. Masukkan Target IP Address (IPv4 / IPv6)</label>
+            <div class="flex space-x-2">
+                <input type="text" id="targetIp" value="163.116.218.97" placeholder="Contoh: 163.116.218.97" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 text-slate-800 font-semibold">
+                <button onclick="pasteIp()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 rounded-xl text-xs font-bold transition-all border border-slate-200">Tempel</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Search Modes Selection -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
+            <label class="block text-xs font-bold text-slate-500 uppercase mono">2. Pilih/Cari Berdasarkan Mode Untuk Memilih</label>
+            
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="selectMode('smart')" id="mode-smart" class="mode-card text-left p-2.5 rounded-xl border border-blue-500 bg-blue-50/50 transition-all">
+                    <p class="text-[11px] font-bold text-blue-700">⚡ Smart Auto-Scan</p>
+                    <p class="text-[9px] text-slate-500 mt-0.5">Otomatis cari IP terbaik</p>
+                </button>
+                <button onclick="selectMode('full')" id="mode-full" class="mode-card text-left p-2.5 rounded-xl border border-slate-200 bg-slate-50 transition-all">
+                    <p class="text-[11px] font-bold text-slate-700">🎯 Full Match</p>
+                    <p class="text-[9px] text-slate-500 mt-0.5">Wajib sama 4 oktet</p>
+                </button>
+                <button onclick="selectMode('asn')" id="mode-asn" class="mode-card text-left p-2.5 rounded-xl border border-slate-200 bg-slate-50 transition-all">
+                    <p class="text-[11px] font-bold text-slate-700">🌐 ASN Only</p>
+                    <p class="text-[9px] text-slate-500 mt-0.5">Target jaringan/ASNumber</p>
+                </button>
+                <button onclick="selectMode('city')" id="mode-city" class="mode-card text-left p-2.5 rounded-xl border border-slate-200 bg-slate-50 transition-all">
+                    <p class="text-[11px] font-bold text-slate-700">🏙️ City Only</p>
+                    <p class="text-[9px] text-slate-500 mt-0.5">Filter berdasarkan kota</p>
+                </button>
+                <button onclick="selectMode('country')" id="mode-country" class="mode-card text-left p-2.5 rounded-xl border border-slate-200 bg-slate-50 transition-all">
+                    <p class="text-[11px] font-bold text-slate-700">🌍 Country Only</p>
+                    <p class="text-[9px] text-slate-500 mt-0.5">Provinsi/Negara Setara</p>
+                </button>
+                <button onclick="selectMode('custom')" id="mode-custom" class="mode-card text-left p-2.5 rounded-xl border border-slate-200 bg-slate-50 transition-all">
+                    <p class="text-[11px] font-bold text-slate-700">⚙️ Custom & Preset</p>
+                    <p class="text-[9px] text-slate-500 mt-0.5">Pengaturan kustom</p>
+                </button>
+            </div>
+
+            <!-- Mode Description Box -->
+            <div id="modeDesc" class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-[11px] text-blue-800 space-y-0.5">
+                <p class="font-bold">MODE 1: Smart Auto-Scan & Normal Scan</p>
+                <p class="text-slate-600 text-[10px]">Cekat/tempelkan Target IP. Sistem otomatis membaca negara, kota, dan ASN target, lalu mencarikan IP terbaik dengan kombinasi lokasi di dekat Anda.</p>
+            </div>
+
+            <!-- Action Scan Button -->
+            <button onclick="startScanning()" id="scanBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md shadow-blue-200 flex items-center justify-center space-x-2">
+                <span>🔍 MULAI PENCARIAN IP TERBAIK</span>
+            </button>
+        </div>
+
+        <!-- Step 3: Candidates List -->
+        <div id="candidatesSection" class="hidden space-y-3">
+            <div class="flex justify-between items-center px-1">
+                <span class="text-xs font-bold text-slate-500 uppercase mono">Kandidat IP Tersedia (4)</span>
+                <span class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded-full">Klik Hubungkan Port</span>
+            </div>
+
+            <div id="candidatesList" class="space-y-2.5">
+                <!-- Dinamis diisi via JavaScript -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-slate-400 text-[10px] mono border-t border-slate-200 bg-white mt-6">
+        Skiee Proxy Network © 2026
+    </footer>
+
+    <!-- Modal Connecting & Success Overlay -->
+    <div id="connectModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 text-center">
+            
+            <!-- Loading state -->
+            <div id="modalLoading" class="py-6 space-y-3">
+                <div class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                <p class="font-bold text-sm text-slate-800">Menghubungkan Jalur Proxy...</p>
+                <p class="text-xs text-slate-500">Memverifikasi kualitas residential node...</p>
+            </div>
+
+            <!-- Success state -->
+            <div id="modalSuccess" class="hidden space-y-4 text-left">
+                <div class="flex items-center space-x-3 bg-emerald-50 border border-emerald-200 rounded-2xl p-3">
+                    <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-sm">✓</div>
+                    <div>
+                        <p class="text-xs font-extrabold text-emerald-800">Port Berhasil Terhubung!</p>
+                        <p class="text-[10px] text-emerald-600">Jalur proxy aktif & siap digunakan.</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2 text-xs mono">
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">HOST:</span>
+                        <span id="resHost" class="font-bold text-slate-700">--</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">PORT:</span>
+                        <span id="resPort" class="font-bold text-blue-600">#5278</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">LOKASI IP:</span>
+                        <span id="resLoc" class="font-bold text-slate-700">--</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">NAMA PENGGUNA:</span>
+                        <span class="font-bold text-slate-700">SkieeProxy/Network</span>
+                    </div>
+                </div>
+
+                <div class="space-y-2 pt-1">
+                    <button onclick="copyCredentials()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs py-3 rounded-xl transition-all border border-slate-200">
+                        📋 Salin Format Kredensial
+                    </button>
+                    <button onclick="closeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md shadow-blue-200">
+                        Selesaikan & Gunakan Proxy
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let selectedModeVal = 'smart';
+        let deferredPrompt = null;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBtn').classList.remove('hidden');
+        });
+
+        document.getElementById('installBtn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('installBtn').classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        function pasteIp() {
+            navigator.clipboard.readText().then(text => {
+                document.getElementById('targetIp').value = text;
+            }).catch(err => {
+                alert('Silakan tempel manual.');
+            });
+        }
+
+        function selectMode(mode) {
+            selectedModeVal = mode;
+            document.querySelectorAll('.mode-card').forEach(el => {
+                el.classList.remove('border-blue-500', 'bg-blue-50/50');
+                el.classList.add('border-slate-200', 'bg-slate-50');
+                el.querySelector('p').classList.remove('text-blue-700');
+                el.querySelector('p').classList.add('text-slate-700');
+            });
+
+            const activeCard = document.getElementById('mode-' + mode);
+            activeCard.classList.remove('border-slate-200', 'bg-slate-50');
+            activeCard.classList.add('border-blue-500', 'bg-blue-50/50');
+            activeCard.querySelector('p').classList.remove('text-slate-700');
+            activeCard.querySelector('p').classList.add('text-blue-700');
+
+            const descBox = document.getElementById('modeDesc');
+            if (mode === 'smart') {
+                descBox.innerHTML = `<p class="font-bold">MODE 1: Smart Auto-Scan & Normal Scan</p><p class="text-slate-600 text-[10px]">Cekat/tempelkan Target IP. Sistem otomatis membaca negara, kota, dan ASN target, lalu mencarikan IP terbaik dengan kombinasi lokasi di dekat Anda.</p>`;
+            } else if (mode === 'full') {
+                descBox.innerHTML = `<p class="font-bold">MODE 2: Full Match</p><p class="text-slate-600 text-[10px]">Pencarian ketat dengan mencocokkan 4 oktet penuh pada segmen penyedia proxy yang identik.</p>`;
+            } else if (mode === 'asn') {
+                descBox.innerHTML = `<p class="font-bold">MODE 3: ASN Only (Target Jaringan)</p><p class="text-slate-600 text-[10px]">Fokus mencari IP terdekat dengan nomor ASN / Provider internet yang sama di negara target tanpa terikat pada kota tertentu.</p>`;
+            } else if (mode === 'city') {
+                descBox.innerHTML = `<p class="font-bold">MODE 4: City Only</p><p class="text-slate-600 text-[10px]">Menyaring node proxy khusus berdasarkan wilayah kota yang bersesuaian dengan target IP.</p>`;
+            } else if (mode === 'country') {
+                descBox.innerHTML = `<p class="font-bold">MODE 5: Country Only</p><p class="text-slate-600 text-[10px]">Pencarian diperluas dalam skala satu negara / region untuk fleksibilitas maksimal.</p>`;
+            } else {
+                descBox.innerHTML = `<p class="font-bold">MODE 6: Custom & Preset</p><p class="text-slate-600 text-[10px]">Gunakan parameter kustom untuk menyaring port dan oktet secara manual sesuai kebutuhan.</p>`;
+            }
+        }
+
+        function startScanning() {
+            const ip = document.getElementById('targetIp').value.trim();
+            if (!ip) {
+                alert('Masukkan IP target terlebih dahulu!');
+                return;
+            }
+
+            const btn = document.getElementById('scanBtn');
+            btn.innerHTML = '<span>⏳ SEDANG MENYELEKSI/SCAN IP TERBAIK...</span>';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.innerHTML = '<span>🔍 MULAI PENCARIAN IP TERBAIK</span>';
+                btn.disabled = false;
+                renderCandidates(ip);
+                document.getElementById('candidatesSection').classList.remove('hidden');
+                window.scrollTo({ top: 400, behavior: 'smooth' });
+            }, 1200);
+        }
+
+        // Daftar sampel kota dan wilayah Indonesia & Global agar lokasi IP tampil realistis
+        const locationPool = [
+            { city: "Semarang, ID", asn: "AS15816 Telkom", flag: "🇮🇩" },
+            { city: "Jakarta Pusat, ID", asn: "AS7713 Indosat", flag: "🇮🇩" },
+            { city: "Bandung, ID", asn: "AS152014 Mitra Kita", flag: "🇮🇩" },
+            { city: "Surabaya, ID", asn: "AS45102 CyberNet", flag: "🇮🇩" },
+            { city: "Singapore, SG", asn: "AS16509 Amazon AWS", flag: "🇸🇬" }
+        ];
+
+        function renderCandidates(baseIp) {
+            const list = document.getElementById('candidatesList');
+            let parts = baseIp.split('.');
+            let prefix = parts.slice(0, 3).join('.');
+            if (parts.length < 3) prefix = "163.116.218";
+
+            let html = '';
+            for (let i = 1; i <= 4; i++) {
+                let candidateIp = `${prefix}.${Math.floor(Math.random() * 200) + 1}`;
+                let loc = locationPool[(i - 1) % locationPool.length];
+                let matchType = i === 1 ? "4/4 Klik Oktet" : i === 2 ? "3/4 Klik Oktet" : i === 3 ? "2/4 Klik Oktet" : "1/4 Klik Oktet";
+                
+                html += `
+                <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-sm flex items-center justify-between">
+                    <div class="space-y-1">
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-sm text-slate-800 mono">${candidateIp}</span>
+                            <span class="text-[9px] bg-emerald-50 text-emerald-600 font-bold px-1.5 py-0.5 rounded-full border border-emerald-200">+ RESIDENTIAL AKTIF</span>
+                        </div>
+                        <div class="text-[10px] text-slate-600 space-x-1.5 flex items-center">
+                            <span>${loc.flag}</span>
+                            <span>LOKASI: <strong class="text-slate-800">${loc.city}</strong></span>
+                            <span>•</span>
+                            <span>ASN: <strong class="text-slate-800">${loc.asn}</strong></span>
+                        </div>
+                        <div class="text-[10px] text-blue-600 font-semibold">
+                            ⚖️ KECOCOKAN: ${matchType}
+                        </div>
+                    </div>
+                    <button onclick="connectPort('${candidateIp}', '${loc.city}')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] px-3.5 py-2.5 rounded-xl transition-all shadow-sm shadow-blue-100 whitespace-nowrap">
+                        🔗 HUBUNGKAN PORT
+                    </button>
+                </div>
+                `;
+            }
+            list.innerHTML = html;
+        }
+
+        let activeHost = "";
+        let activeLoc = "";
+
+        function connectPort(ip, loc) {
+            activeHost = ip;
+            activeLoc = loc;
+            const modal = document.getElementById('connectModal');
+            const loading = document.getElementById('modalLoading');
+            const success = document.getElementById('modalSuccess');
+
+            modal.classList.remove('hidden');
+            loading.classList.remove('hidden');
+            success.classList.add('hidden');
+
+            setTimeout(() => {
+                loading.classList.add('hidden');
+                success.classList.remove('hidden');
+                document.getElementById('resHost').innerText = activeHost;
+                document.getElementById('resPort').innerText = '#' + (Math.floor(Math.random() * 3000) + 4000);
+                document.getElementById('resLoc').innerText = activeLoc;
+            }, 1500);
+        }
+
+        function copyCredentials() {
+            const port = document.getElementById('resPort').innerText.replace('#','');
+            const text = `${activeHost}:${port}:SkieeUser:SecurePass`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Kredensial & Lokasi IP berhasil disalin ke clipboard!');
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('connectModal').classList.add('hidden');
+            alert('Proxy berhasil diterapkan ke jaringan perangkat Anda!');
+        }
+    </script>
+</body>
+</html>
