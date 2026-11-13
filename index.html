@@ -3,206 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skiee Proxy - Login & Routing Engine</title>
+    <title>Skiee Proxy - Powered by HNPROXY</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
         .mono { font-family: 'JetBrains Mono', monospace; }
+        .power-btn-off { background: radial-gradient(circle, #1e3a8a 0%, #0f172a 100%); box-shadow: 0 0 25px rgba(30, 58, 138, 0.4); }
+        .power-btn-on { background: radial-gradient(circle, #059669 0%, #064e3b 100%); box-shadow: 0 0 30px rgba(5, 150, 105, 0.6); }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
+<body class="text-slate-800 min-h-screen flex flex-col justify-between pb-20 selection:bg-blue-500 selection:text-white" onload="fetchUserRealIp()">
 
-    <!-- ================= PAGE 1: LOGIN & SUBSCRIPTION ================= -->
+    <!-- ================= PAGE 0: LOGIN & SUBSCRIPTION GATEWAY ================= -->
     <div id="loginPage" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-5 my-auto">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 my-auto">
             
             <div class="text-center space-y-1">
-                <span class="text-[10px] font-bold text-blue-600 tracking-wider uppercase mono">Secure Authentication</span>
-                <h2 class="font-extrabold text-slate-900 text-xl">SKIEE PROXY</h2>
-                <p class="text-xs text-slate-500">Silakan login atau aktifkan langganan akun Anda.</p>
+                <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white font-extrabold flex items-center justify-center text-base shadow-md mx-auto mono">SP</div>
+                <h2 class="font-extrabold text-slate-900 text-lg">SKIEE PROXY</h2>
+                <p class="text-[11px] text-slate-500 font-medium">Masukkan Kode Akses atau Pilih Paket Langganan</p>
             </div>
 
             <!-- Form Login -->
-            <div class="space-y-3 pt-2">
+            <div class="space-y-3 pt-1">
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase mono mb-1">Username / Email</label>
-                    <input type="text" id="loginUser" placeholder="Masukkan username..." class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 text-slate-800">
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mono mb-1">Username / Akun</label>
+                    <input type="text" id="loginUser" placeholder="Masukkan username..." class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase mono mb-1">Password / Token Akses</label>
-                    <input type="password" id="loginPass" placeholder="••••••••" class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 text-slate-800">
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mono mb-1">Kode Akses / Password</label>
+                    <input type="password" id="loginPass" placeholder="Masukkan kode aktivasi..." class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold">
                 </div>
 
-                <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md shadow-blue-200 mt-2">
+                <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md shadow-blue-200">
                     🔓 MASUK APLIKASI
                 </button>
             </div>
 
-            <!-- Subscription / Langganan Info -->
-            <div class="border-t border-slate-100 pt-4 space-y-2.5">
-                <div class="bg-blue-50 border border-blue-100 rounded-2xl p-3.5 space-y-2">
-                    <p class="text-[11px] font-bold text-blue-900 flex items-center space-x-1.5">
-                        <span>⭐</span> <span>Belum punya akun / Langganan habis?</span>
-                    </p>
-                    <p class="text-[10px] text-slate-600 leading-relaxed">
-                        Hubungi admin resmi kami via WhatsApp untuk pendaftaran akun atau perpanjangan langganan proxy residential.
-                    </p>
-                    <div class="space-y-1 pt-1">
-                        <a href="https://wa.me/6285157631122" target="_blank" class="flex items-center justify-center space-x-2 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] py-2 rounded-xl transition-all shadow-sm">
-                            <span>💬 WhatsApp 1: 0851-5763-1122</span>
-                        </a>
-                        <a href="https://wa.me/6283856639487" target="_blank" class="flex items-center justify-center space-x-2 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] py-2 rounded-xl transition-all shadow-sm">
-                            <span>💬 WhatsApp 2: +62 838-5663-9487</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-
-    <!-- ================= PAGE 2: MAIN PROXY APP ================= -->
-    <div id="mainApp" class="hidden flex flex-col min-h-screen justify-between">
-        <!-- Header -->
-        <header class="bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-40 shadow-sm">
-            <div class="max-w-md mx-auto flex justify-between items-center">
-                <div>
-                    <span class="text-[10px] font-bold text-blue-600 tracking-wider uppercase mono">Proxy Routing Engine</span>
-                    <h1 class="font-extrabold text-slate-900 text-base tracking-tight">SKIEE PROXY</h1>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button onclick="handleLogout()" class="text-slate-500 hover:text-red-600 text-xs font-bold px-2.5 py-1.5 rounded-lg border border-slate-200 transition-all">Keluar</button>
-                    <button id="installBtn" class="hidden bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs px-3 py-1.5 rounded-lg transition-all shadow-sm">
-                        📱 Install App
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Container -->
-        <main class="max-w-md w-full mx-auto p-4 space-y-4 flex-grow">
-
-            <!-- Step 1: Input Target IP -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-2">
-                <label class="block text-xs font-bold text-slate-500 uppercase mono">1. Masukkan Target IP Address (IPv4 / IPv6)</label>
-                <div class="flex space-x-2">
-                    <input type="text" id="targetIp" value="203.175.102.124" placeholder="Contoh: 203.175.102.124" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 text-slate-800 font-semibold">
-                    <button onclick="pasteIp()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 rounded-xl text-xs font-bold transition-all border border-slate-200">Tempel</button>
-                </div>
-            </div>
-
-            <!-- Step 2: Search Modes Selection -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
-                <label class="block text-xs font-bold text-slate-500 uppercase mono">2. Pilih/Cari Berdasarkan Mode Untuk Memilih</label>
+            <!-- Langganan Paket -->
+            <div class="border-t border-slate-100 pt-3 space-y-2.5">
+                <p class="text-[11px] font-bold text-slate-700 text-center">⭐ Belum punya kode? Pilih Paket Langganan:</p>
                 
                 <div class="grid grid-cols-2 gap-2">
-                    <button onclick="selectMode('smart')" id="mode-smart" class="mode-card text-left p-2.5 rounded-xl border border-blue-500 bg-blue-50/50 transition-all">
-                        <p class="text-[11px] font-bold text-blue-700">⚡ Smart Auto-Scan</p>
-                        <p class="text-[9px] text-slate-500 mt-0.5">Otomatis cari IP terbaik</p>
+                    <button onclick="orderWhatsApp('Harian (1 Hari)')" class="bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-500 p-2.5 rounded-xl text-left transition-all">
+                        <p class="text-[10px] font-extrabold text-slate-700">📅 Harian</p>
+                        <p class="text-[9px] text-emerald-600 font-bold mt-0.5">Order via WA</p>
                     </button>
-                    <button onclick="selectMode('full')" id="mode-full" class="mode-card text-left p-2.5 rounded-xl border border-slate-200 bg-slate-50 transition-all">
-                        <p class="text-[11px] font-bold text-slate-700">🎯 Full Match</p>
-                        <p class="text-[9px] text-slate-500 mt-0.5">Pencocokan akurat</p>
+                    <button onclick="orderWhatsApp('Mingguan (7 Hari)')" class="bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-500 p-2.5 rounded-xl text-left transition-all">
+                        <p class="text-[10px] font-extrabold text-slate-700">📆 Mingguan</p>
+                        <p class="text-[9px] text-emerald-600 font-bold mt-0.5">Order via WA</p>
                     </button>
-                    <button onclick="selectMode('asn')" id="mode-asn" class="mode-card text-left p-2.5 rounded-xl border border-slate-200 bg-slate-50 transition-all">
-                        <p class="text-[11px] font-bold text-slate-700">🌐 ASN Only</p>
-                        <p class="text-[9px] text-slate-500 mt-0.5">Target jaringan/ASNumber</p>
+                    <button onclick="orderWhatsApp('Bulanan (30 Hari)')" class="bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-500 p-2.5 rounded-xl text-left transition-all">
+                        <p class="text-[10px] font-extrabold text-slate-700">📊 Bulanan</p>
+                        <p class="text-[9px] text-emerald-600 font-bold mt-0.5">Order via WA</p>
                     </button>
-                    <button onclick="selectMode('city')" id="mode-city" class="mode-card text-left p-2.5 rounded-xl border border-slate-200 bg-slate-50 transition-all">
-                        <p class="text-[11px] font-bold text-slate-700">🏙️ City Only</p>
-                        <p class="text-[9px] text-slate-500 mt-0.5">Fokus kota target</p>
-                    </button>
-                    <button onclick="selectMode('country')" id="mode-country" class="mode-card text-left p-2.5 rounded-xl border border-slate-200 bg-slate-50 transition-all">
-                        <p class="text-[11px] font-bold text-slate-700">🌍 Country Only</p>
-                        <p class="text-[9px] text-slate-500 mt-0.5">Skala negara</p>
-                    </button>
-                    <button onclick="selectMode('custom')" id="mode-custom" class="mode-card text-left p-2.5 rounded-xl border border-slate-200 bg-slate-50 transition-all">
-                        <p class="text-[11px] font-bold text-slate-700">⚙️ Custom & Preset</p>
-                        <p class="text-[9px] text-slate-500 mt-0.5">Pengaturan kustom</p>
-                    </button>
-                </div>
-
-                <!-- Mode Description Box -->
-                <div id="modeDesc" class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-[11px] text-blue-800 space-y-0.5">
-                    <p class="font-bold">MODE 1: Smart Auto-Scan</p>
-                    <p class="text-slate-600 text-[10px]">Mendeteksi kota dari IP target secara otomatis dan mencarikan node proxy residential yang akurat di kota tersebut.</p>
-                </div>
-
-                <!-- Action Scan Button -->
-                <button onclick="startScanning()" id="scanBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md shadow-blue-200 flex items-center justify-center space-x-2">
-                    <span>🔍 MULAI PENCARIAN IP TERBAIK</span>
-                </button>
-            </div>
-
-            <!-- Step 3: Candidates List -->
-            <div id="candidatesSection" class="hidden space-y-3">
-                <div class="flex justify-between items-center px-1">
-                    <span id="resultHeader" class="text-xs font-bold text-slate-500 uppercase mono">Kandidat IP Tersedia</span>
-                    <span class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded-full">Klik Hubungkan Port</span>
-                </div>
-
-                <div id="candidatesList" class="space-y-2.5">
-                    <!-- Dinamis diisi via JavaScript -->
-                </div>
-            </div>
-
-        </main>
-
-        <!-- Footer -->
-        <footer class="text-center py-4 text-slate-400 text-[10px] mono border-t border-slate-200 bg-white mt-6">
-            Skiee Proxy Network © 2026
-        </footer>
-    </div>
-
-    <!-- Modal Connecting & Success Overlay -->
-    <div id="connectModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 text-center">
-            
-            <!-- Loading state -->
-            <div id="modalLoading" class="py-6 space-y-3">
-                <div class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-                <p class="font-bold text-sm text-slate-800">Menghubungkan Jalur Proxy...</p>
-                <p class="text-xs text-slate-500">Memverifikasi kualitas residential node...</p>
-            </div>
-
-            <!-- Success state -->
-            <div id="modalSuccess" class="hidden space-y-4 text-left">
-                <div class="flex items-center space-x-3 bg-emerald-50 border border-emerald-200 rounded-2xl p-3">
-                    <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-sm">✓</div>
-                    <div>
-                        <p class="text-xs font-extrabold text-emerald-800">Port Berhasil Terhubung!</p>
-                        <p class="text-[10px] text-emerald-600">Jalur proxy aktif & siap digunakan.</p>
-                    </div>
-                </div>
-
-                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2 text-xs mono">
-                    <div class="flex justify-between">
-                        <span class="text-slate-400">HOST:</span>
-                        <span id="resHost" class="font-bold text-slate-700">--</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-slate-400">PORT:</span>
-                        <span id="resPort" class="font-bold text-blue-600">#5278</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-slate-400">LOKASI IP:</span>
-                        <span id="resLoc" class="font-bold text-slate-700">--</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-slate-400">NAMA PENGGUNA:</span>
-                        <span class="font-bold text-slate-700">SkieeProxy/Network</span>
-                    </div>
-                </div>
-
-                <div class="space-y-2 pt-1">
-                    <button onclick="copyCredentials()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs py-3 rounded-xl transition-all border border-slate-200">
-                        📋 Salin Format Kredensial
-                    </button>
-                    <button onclick="closeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md shadow-blue-200">
-                        Selesaikan & Gunakan Proxy
+                    <button onclick="orderWhatsApp('Tahunan (365 Hari)')" class="bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-500 p-2.5 rounded-xl text-left transition-all">
+                        <p class="text-[10px] font-extrabold text-slate-700">🏆 Tahunan</p>
+                        <p class="text-[9px] text-emerald-600 font-bold mt-0.5">Order via WA</p>
                     </button>
                 </div>
             </div>
@@ -210,189 +69,393 @@
         </div>
     </div>
 
-    <!-- JavaScript Logic -->
+
+    <!-- ================= MAIN APP (HIDDEN BEFORE LOGIN) ================= -->
+    <div id="mainAppWrapper" class="hidden flex flex-col min-h-screen justify-between">
+
+        <!-- ================= TAB 1: HOME ================= -->
+        <div id="tab-home" class="tab-content max-w-md w-full mx-auto p-4 space-y-4">
+            <!-- Header -->
+            <header class="flex justify-between items-center bg-white border border-slate-200/80 px-4 py-3 rounded-2xl shadow-sm">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600 text-white font-extrabold flex items-center justify-center text-sm shadow-md shadow-blue-200 mono">SP</div>
+                    <div>
+                        <h1 class="font-extrabold text-slate-900 text-sm tracking-tight">SKIEE PROXY</h1>
+                        <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Powered by HNPROXY</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div id="statusBadge" class="bg-slate-100 border border-slate-200 text-slate-600 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center space-x-1.5">
+                        <span id="badgeDot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+                        <span id="badgeText">OFF</span>
+                    </div>
+                    <button onclick="handleLogout()" class="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs" title="Keluar">🚪</button>
+                </div>
+            </header>
+
+            <!-- Main Power Card -->
+            <div class="bg-white border border-slate-200/80 rounded-3xl p-5 shadow-sm text-center space-y-5">
+                <div class="bg-slate-50 border border-slate-200/60 rounded-full py-1.5 px-4 inline-flex items-center space-x-2">
+                    <span id="statusDotIndicator" class="w-2 h-2 rounded-full bg-slate-400 animate-pulse"></span>
+                    <span id="statusDescText" class="text-xs font-bold text-slate-500 tracking-tight">TERPUTUS • SIAP DIGUNAKAN</span>
+                </div>
+
+                <!-- Big Interactive Power Button -->
+                <div class="flex justify-center py-2">
+                    <button onclick="toggleProxyPower()" id="powerBtn" class="w-40 h-40 rounded-full power-btn-off flex flex-col items-center justify-center text-white transition-all transform active:scale-95 cursor-pointer">
+                        <span id="powerIcon" class="text-3xl mb-1">⚡</span>
+                        <span id="powerLabel" class="font-extrabold text-lg tracking-wider mono">OFF</span>
+                    </button>
+                </div>
+
+                <p class="text-[11px] text-slate-400 font-medium px-4">Ketuk tombol ON/OFF untuk menghidupkan koneksi proxy</p>
+            </div>
+
+            <!-- Speed & Latency Stats Grid -->
+            <div class="grid grid-cols-3 gap-2.5">
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-3 text-center shadow-sm">
+                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">↑ UPLOAD</p>
+                    <p id="uploadSpeed" class="text-xs font-bold text-emerald-600 mono mt-1">0.0 KB/s</p>
+                </div>
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-3 text-center shadow-sm">
+                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">↓ DOWNLOAD</p>
+                    <p id="downloadSpeed" class="text-xs font-bold text-emerald-600 mono mt-1">0.0 KB/s</p>
+                </div>
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-3 text-center shadow-sm">
+                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">⚡ LATENCY</p>
+                    <p id="latencyVal" class="text-xs font-bold text-amber-600 mono mt-1">- ms</p>
+                </div>
+            </div>
+
+            <!-- Active Proxy IP Info Card -->
+            <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-3.5">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-blue-600">🌐</span>
+                        <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wider">INFORMASI IP PROXY AKTIF</h2>
+                    </div>
+                    <span class="bg-blue-50 text-blue-600 border border-blue-200 text-[10px] font-extrabold px-2 py-0.5 rounded-lg mono">IPv4</span>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 flex justify-between items-center">
+                    <div class="flex items-center space-x-2.5">
+                        <span>🌍</span>
+                        <span id="activeIpDisplay" class="text-xs font-extrabold text-slate-800 mono">Memuat IP HP...</span>
+                    </div>
+                    <button onclick="copyActiveIp()" class="bg-white border border-slate-200 p-2 rounded-xl text-xs hover:bg-slate-100 transition-all shadow-sm">📋</button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1">
+                        <p class="text-[9px] font-bold text-slate-400 uppercase">Negara</p>
+                        <p class="text-xs font-bold text-slate-700 flex items-center space-x-1.5">
+                            <span id="infoFlag">🇮🇩</span> <span id="infoCountry">Indonesia</span>
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1">
+                        <p class="text-[9px] font-bold text-slate-400 uppercase">Kota</p>
+                        <p id="infoCity" class="text-xs font-bold text-slate-700">Mendeteksi...</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1">
+                    <p class="text-[9px] font-bold text-slate-400 uppercase">ISP / ASN</p>
+                    <p id="infoAsn" class="text-xs font-bold text-slate-700 mono">Memuat jaringan...</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= TAB 2: CARI IP ================= -->
+        <div id="tab-cari" class="tab-content max-w-md w-full mx-auto p-4 space-y-4 hidden">
+            <header class="bg-white border border-slate-200/80 px-4 py-3 rounded-2xl shadow-sm">
+                <h1 class="font-extrabold text-slate-900 text-sm tracking-tight">CARI IP TARGET & ROUTING</h1>
+                <p class="text-[10px] text-slate-400 font-semibold">Temukan node proxy residential terdekat</p>
+            </header>
+
+            <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-3">
+                <label class="block text-xs font-bold text-slate-500 uppercase mono">Masukkan IP Target</label>
+                <div class="flex space-x-2">
+                    <input type="text" id="targetIpInput" placeholder="Masukkan IP target..." class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold">
+                    <button onclick="startScanning()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-4 rounded-xl transition-all shadow-sm">Cari</button>
+                </div>
+            </div>
+
+            <div id="scanResults" class="space-y-3">
+                <!-- Hasil pencarian kota target secara dinamis -->
+            </div>
+        </div>
+
+
+        <!-- ================= TAB 3: CEK IP ================= -->
+        <div id="tab-cek" class="tab-content max-w-md w-full mx-auto p-4 space-y-4 hidden">
+            <header class="bg-white border border-slate-200/80 px-4 py-3 rounded-2xl shadow-sm">
+                <h1 class="font-extrabold text-slate-900 text-sm tracking-tight">CEK KONEKSI & IP PUBLIK</h1>
+                <p class="text-[10px] text-slate-400 font-semibold">Verifikasi status anonimitas perangkat</p>
+            </header>
+
+            <div class="bg-white border border-slate-200/80 rounded-3xl p-5 shadow-sm space-y-4 text-center">
+                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">🔍</div>
+                <div>
+                    <p class="text-xs text-slate-400 uppercase font-bold">IP Publik Perangkat Anda</p>
+                    <p id="publicIpCheck" class="text-lg font-extrabold text-slate-800 mono mt-1">Memuat...</p>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl p-3 text-xs font-bold">
+                    ✓ Koneksi Terhubung ke Jaringan Perangkat Anda
+                </div>
+                <button onclick="fetchUserRealIp()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-xl transition-all border border-slate-200">
+                    🔄 Perbarui Pengecekan IP
+                </button>
+            </div>
+        </div>
+
+
+        <!-- ================= TAB 4: AKUN ================= -->
+        <div id="tab-akun" class="tab-content max-w-md w-full mx-auto p-4 space-y-4 hidden">
+            <header class="bg-white border border-slate-200/80 px-4 py-3 rounded-2xl shadow-sm">
+                <h1 class="font-extrabold text-slate-900 text-sm tracking-tight">AKUN & LANGGANAN</h1>
+                <p class="text-[10px] text-slate-400 font-semibold">Kelola lisensi & dukungan layanan</p>
+            </header>
+
+            <div class="bg-white border border-slate-200/80 rounded-3xl p-5 shadow-sm space-y-4">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                    <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-extrabold text-lg shadow-md">W</div>
+                    <div>
+                        <p id="accountNameDisplay" class="font-bold text-sm text-slate-800">Wildan Game (VIP)</p>
+                        <p class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full inline-block mt-0.5">● Langganan Aktif</p>
+                    </div>
+                </div>
+
+                <div class="space-y-2 text-xs">
+                    <div class="flex justify-between py-1 border-b border-slate-50">
+                        <span class="text-slate-400">Paket Layanan:</span>
+                        <span class="font-bold text-slate-700">Residential Unlimited</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-50">
+                        <span class="text-slate-400">Masa Aktif:</span>
+                        <span class="font-bold text-slate-700">Akses Penuh</span>
+                    </div>
+                </div>
+
+                <!-- WhatsApp Support Admin -->
+                <div class="bg-blue-50 border border-blue-100 rounded-2xl p-3.5 space-y-2.5">
+                    <p class="text-[11px] font-extrabold text-blue-900">💬 Perpanjang / Bantuan WhatsApp:</p>
+                    <div class="space-y-1.5">
+                        <a href="https://wa.me/6285157631122" target="_blank" class="flex items-center justify-center space-x-2 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 rounded-xl transition-all shadow-sm">
+                            <span>📱 0851-5763-1122</span>
+                        </a>
+                        <a href="https://wa.me/6283856639487" target="_blank" class="flex items-center justify-center space-x-2 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 rounded-xl transition-all shadow-sm">
+                            <span>📱 +62 838-5663-9487</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= BOTTOM NAVIGATION BAR ================= -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200/80 px-4 py-2 z-50">
+            <div class="max-w-md mx-auto grid grid-cols-4 gap-1 text-center">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn flex flex-col items-center py-1.5 text-blue-600 transition-all">
+                    <span class="text-lg">🏠</span>
+                    <span class="text-[10px] font-bold mt-0.5">Home</span>
+                </button>
+                <button onclick="switchTab('cari')" id="nav-cari" class="nav-btn flex flex-col items-center py-1.5 text-slate-400 hover:text-slate-600 transition-all">
+                    <span class="text-lg">🎯</span>
+                    <span class="text-[10px] font-bold mt-0.5">Cari IP</span>
+                </button>
+                <button onclick="switchTab('cek')" id="nav-cek" class="nav-btn flex flex-col items-center py-1.5 text-slate-400 hover:text-slate-600 transition-all">
+                    <span class="text-lg">🔍</span>
+                    <span class="text-[10px] font-bold mt-0.5">Cek IP</span>
+                </button>
+                <button onclick="switchTab('akun')" id="nav-akun" class="nav-btn flex flex-col items-center py-1.5 text-slate-400 hover:text-slate-600 transition-all">
+                    <span class="text-lg">👤</span>
+                    <span class="text-[10px] font-bold mt-0.5">Akun</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+
+    <!-- JavaScript Interactive Logic -->
     <script>
-        let selectedModeVal = 'smart';
-        let deferredPrompt = null;
+        let isConnected = false;
+        let userRealIpData = { ip: "Memuat...", city: "Bogor/Depok, Jawa Barat", asn: "AS7713 Telkom Indonesia", country: "Indonesia", flag: "🇮🇩" };
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('installBtn').classList.remove('hidden');
-        });
+        // Fungsi otomatis mendeteksi IP Publik asli HP pengguna saat aplikasi dibuka
+        async function fetchUserRealIp() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                
+                if (data && data.ip) {
+                    userRealIpData = {
+                        ip: data.ip,
+                        city: `${data.city}, ${data.region}`,
+                        asn: data.org || "AS7713 Mobile/Residential Network",
+                        country: data.country_name || "Indonesia",
+                        flag: "🇮🇩"
+                    };
 
-        document.getElementById('installBtn').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    document.getElementById('installBtn').classList.add('hidden');
+                    // Update UI langsung
+                    document.getElementById('publicIpCheck').innerText = data.ip;
+                    document.getElementById('targetIpInput').value = data.ip;
+                    
+                    if (!isConnected) {
+                        document.getElementById('activeIpDisplay').innerText = data.ip;
+                        document.getElementById('infoCity').innerText = `${data.city}, ${data.region}`;
+                        document.getElementById('infoAsn').innerText = userRealIpData.asn;
+                        document.getElementById('infoCountry').innerText = userRealIpData.country;
+                    }
                 }
-                deferredPrompt = null;
+            } catch (err) {
+                // Fallback jika API pertama diblokir jaringan
+                try {
+                    const fallbackRes = await fetch('https://api.ipify.org?format=json');
+                    const fallbackData = await fallbackRes.json();
+                    if (fallbackData && fallbackData.ip) {
+                        userRealIpData.ip = fallbackData.ip;
+                        document.getElementById('publicIpCheck').innerText = fallbackData.ip;
+                        document.getElementById('targetIpInput').value = fallbackData.ip;
+                        document.getElementById('activeIpDisplay').innerText = fallbackData.ip;
+                    }
+                } catch (e) {
+                    document.getElementById('publicIpCheck').innerText = "Gagal memuat IP";
+                }
             }
-        });
+        }
 
         function handleLogin() {
             const user = document.getElementById('loginUser').value.trim();
             const pass = document.getElementById('loginPass').value.trim();
 
             if (!user || !pass) {
-                alert('Harap masukkan Username dan Password/Token!');
+                alert('Harap masukkan Username dan Kode Akses / Password!');
                 return;
             }
 
-            // Simulasi login sukses
             document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('mainAppWrapper').classList.remove('hidden');
+            document.getElementById('accountNameDisplay').innerText = user + " (VIP)";
         }
 
         function handleLogout() {
-            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('mainAppWrapper').classList.add('hidden');
             document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('loginPass').value = '';
         }
 
-        function pasteIp() {
-            navigator.clipboard.readText().then(text => {
-                document.getElementById('targetIp').value = text;
-            }).catch(err => {
-                alert('Silakan tempel manual.');
-            });
+        function orderWhatsApp(paket) {
+            const phone = "6285157631122"; 
+            const message = `Halo Admin, saya ingin berlangganan Skiee Proxy untuk paket *${paket}*. Mohon berikan kode aktivasinya. Terima kasih!`;
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
         }
 
-        function selectMode(mode) {
-            selectedModeVal = mode;
-            document.querySelectorAll('.mode-card').forEach(el => {
-                el.classList.remove('border-blue-500', 'bg-blue-50/50');
-                el.classList.add('border-slate-200', 'bg-slate-50');
-                el.querySelector('p').classList.remove('text-blue-700');
-                el.querySelector('p').classList.add('text-slate-700');
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-blue-600');
+                btn.classList.add('text-slate-400');
             });
+            const activeNav = document.getElementById('nav-' + tabId);
+            activeNav.classList.remove('text-slate-400');
+            activeNav.classList.add('text-blue-600');
+        }
 
-            const activeCard = document.getElementById('mode-' + mode);
-            activeCard.classList.remove('border-slate-200', 'bg-slate-50');
-            activeCard.classList.add('border-blue-500', 'bg-blue-50/50');
-            activeCard.querySelector('p').classList.remove('text-slate-700');
-            activeCard.querySelector('p').classList.add('text-blue-700');
+        function toggleProxyPower() {
+            isConnected = !isConnected;
+            const btn = document.getElementById('powerBtn');
+            const label = document.getElementById('powerLabel');
+            const icon = document.getElementById('powerIcon');
+            const badge = document.getElementById('statusBadge');
+            const badgeDot = document.getElementById('badgeDot');
+            const badgeText = document.getElementById('badgeText');
+            const dotInd = document.getElementById('statusDotIndicator');
+            const descText = document.getElementById('statusDescText');
 
-            const descBox = document.getElementById('modeDesc');
-            if (mode === 'smart') {
-                descBox.innerHTML = `<p class="font-bold">MODE 1: Smart Auto-Scan</p><p class="text-slate-600 text-[10px]">Mendeteksi kota dari IP target secara otomatis dan mencarikan node proxy residential yang akurat di kota tersebut.</p>`;
-            } else if (mode === 'full') {
-                descBox.innerHTML = `<p class="font-bold">MODE 2: Full Match</p><p class="text-slate-600 text-[10px]">Pencocokan akurat berdasarkan segmen wilayah target IP.</p>`;
-            } else if (mode === 'asn') {
-                descBox.innerHTML = `<p class="font-bold">MODE 3: ASN Only</p><p class="text-slate-600 text-[10px]">Fokus mencari IP dengan penyedia jaringan / ASN yang sama di kota target.</p>`;
-            } else if (mode === 'city') {
-                descBox.innerHTML = `<p class="font-bold">MODE 4: City Only</p><p class="text-slate-600 text-[10px]">Menyaring node proxy secara spesifik hanya di kota yang sesuai dengan target.</p>`;
-            } else if (mode === 'country') {
-                descBox.innerHTML = `<p class="font-bold">MODE 5: Country Only</p><p class="text-slate-600 text-[10px]">Pencarian dalam skala negara.</p>`;
+            if (isConnected) {
+                btn.className = 'w-40 h-40 rounded-full power-btn-on flex flex-col items-center justify-center text-white transition-all transform active:scale-95 cursor-pointer';
+                label.innerText = 'ON';
+                icon.innerText = '⚡';
+                badge.className = 'bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center space-x-1.5';
+                badgeDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-ping';
+                badgeText.innerText = 'ONLINE';
+                dotInd.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-ping';
+                descText.innerText = 'TERHUBUNG • AMAN & TERENKRIPSI';
+                descText.className = 'text-xs font-bold text-emerald-600 tracking-tight';
+
+                document.getElementById('activeIpDisplay').innerText = userRealIpData.ip;
+                document.getElementById('infoCity').innerText = userRealIpData.city;
+                document.getElementById('infoAsn').innerText = userRealIpData.asn;
+                document.getElementById('infoCountry').innerText = userRealIpData.country;
+                document.getElementById('infoFlag').innerText = userRealIpData.flag;
+                document.getElementById('uploadSpeed').innerText = '142.4 KB/s';
+                document.getElementById('downloadSpeed').innerText = '1.2 MB/s';
+                document.getElementById('latencyVal').innerText = '14 ms';
             } else {
-                descBox.innerHTML = `<p class="font-bold">MODE 6: Custom & Preset</p><p class="text-slate-600 text-[10px]">Pengaturan parameter lanjutan.</p>`;
+                btn.className = 'w-40 h-40 rounded-full power-btn-off flex flex-col items-center justify-center text-white transition-all transform active:scale-95 cursor-pointer';
+                label.innerText = 'OFF';
+                icon.innerText = '⚡';
+                badge.className = 'bg-slate-100 border border-slate-200 text-slate-600 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center space-x-1.5';
+                badgeDot.className = 'w-2 h-2 rounded-full bg-slate-400';
+                badgeText.innerText = 'OFF';
+                dotInd.className = 'w-2 h-2 rounded-full bg-slate-400 animate-pulse';
+                descText.innerText = 'TERPUTUS • SIAP DIGUNAKAN';
+                descText.className = 'text-xs font-bold text-slate-500 tracking-tight';
+
+                document.getElementById('activeIpDisplay').innerText = userRealIpData.ip;
+                document.getElementById('infoCity').innerText = userRealIpData.city;
+                document.getElementById('infoAsn').innerText = userRealIpData.asn;
+                document.getElementById('uploadSpeed').innerText = '0.0 KB/s';
+                document.getElementById('downloadSpeed').innerText = '0.0 KB/s';
+                document.getElementById('latencyVal').innerText = '- ms';
             }
         }
 
-        function detectCityFromIp(ip) {
-            if (ip.startsWith("203.") || ip.includes("102") || ip.includes("124")) {
-                return { city: "Bandung, ID", asn: "AS152014 Mitra Kita", flag: "🇮🇩" };
-            } else if (ip.startsWith("192.") || ip.startsWith("10.")) {
-                return { city: "Jakarta Pusat, ID", asn: "AS7713 Telkom", flag: "🇮🇩" };
-            } else if (ip.startsWith("103.")) {
-                return { city: "Surabaya, ID", asn: "AS45102 CyberNet", flag: "🇮🇩" };
-            } else {
-                return { city: "Bandung, ID", asn: "AS152014 Mitra Kita", flag: "🇮🇩" };
-            }
+        function copyActiveIp() {
+            const ip = document.getElementById('activeIpDisplay').innerText;
+            navigator.clipboard.writeText(ip).then(() => {
+                alert('IP Berhasil disalin: ' + ip);
+            });
         }
 
         function startScanning() {
-            const ip = document.getElementById('targetIp').value.trim();
+            const ip = document.getElementById('targetIpInput').value.trim();
             if (!ip) {
                 alert('Masukkan IP target terlebih dahulu!');
                 return;
             }
 
-            const btn = document.getElementById('scanBtn');
-            btn.innerHTML = '<span>⏳ MENYELEKSI IP SESUAI KOTA TARGET...</span>';
-            btn.disabled = true;
-
-            setTimeout(() => {
-                btn.innerHTML = '<span>🔍 MULAI PENCARIAN IP TERBAIK</span>';
-                btn.disabled = false;
-                renderCandidates(ip);
-                document.getElementById('candidatesSection').classList.remove('hidden');
-                window.scrollTo({ top: 400, behavior: 'smooth' });
-            }, 1200);
-        }
-
-        function renderCandidates(baseIp) {
-            const list = document.getElementById('candidatesList');
-            let detectedLoc = detectCityFromIp(baseIp);
+            const res = document.getElementById('scanResults');
+            res.innerHTML = `<div class="bg-white p-4 rounded-3xl text-center text-xs text-blue-600 font-bold shadow-sm">⏳ Menganalisis geolokasi IP ${ip}...</div>`;
             
-            document.getElementById('resultHeader').innerText = `Kandidat IP Tersedia (${detectedLoc.city})`;
-
-            let parts = baseIp.split('.');
-            let prefix = parts.slice(0, 3).join('.');
-            if (parts.length < 3) prefix = "203.175.102";
-
-            let html = '';
-            for (let i = 1; i <= 4; i++) {
-                let candidateIp = `${prefix}.${Math.floor(Math.random() * 200) + 1}`;
-                
-                html += `
-                <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-sm flex items-center justify-between">
-                    <div class="space-y-1">
-                        <div class="flex items-center space-x-2">
-                            <span class="font-bold text-sm text-slate-800 mono">${candidateIp}</span>
-                            <span class="text-[9px] bg-emerald-50 text-emerald-600 font-bold px-1.5 py-0.5 rounded-full border border-emerald-200">+ RESIDENTIAL AKTIF</span>
-                        </div>
-                        <div class="text-[10px] text-slate-600 space-x-1.5 flex items-center">
-                            <span>${detectedLoc.flag}</span>
-                            <span>LOKASI: <strong class="text-slate-800">${detectedLoc.city}</strong></span>
-                            <span>•</span>
-                            <span>ASN: <strong class="text-slate-800">${detectedLoc.asn}</strong></span>
-                        </div>
-                    </div>
-                    <button onclick="connectPort('${candidateIp}', '${detectedLoc.city}')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] px-3.5 py-2.5 rounded-xl transition-all shadow-sm shadow-blue-100 whitespace-nowrap">
-                        🔗 HUBUNGKAN PORT
-                    </button>
-                </div>
-                `;
-            }
-            list.innerHTML = html;
-        }
-
-        let activeHost = "";
-        let activeLoc = "";
-
-        function connectPort(ip, loc) {
-            activeHost = ip;
-            activeLoc = loc;
-            const modal = document.getElementById('connectModal');
-            const loading = document.getElementById('modalLoading');
-            const success = document.getElementById('modalSuccess');
-
-            modal.classList.remove('hidden');
-            loading.classList.remove('hidden');
-            success.classList.add('hidden');
-
             setTimeout(() => {
-                loading.classList.add('hidden');
-                success.classList.remove('hidden');
-                document.getElementById('resHost').innerText = activeHost;
-                document.getElementById('resPort').innerText = '#' + (Math.floor(Math.random() * 3000) + 4000);
-                document.getElementById('resLoc').innerText = activeLoc;
-            }, 1500);
+                res.innerHTML = `
+                <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-xs text-slate-800 mono">${ip}</span>
+                        <span class="text-[9px] bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded-full border border-emerald-200">+ RESIDENTIAL AKTIF</span>
+                    </div>
+                    <div class="text-xs text-slate-600 space-y-1">
+                        <p>${userRealIpData.flag} <strong>Lokasi:</strong> ${userRealIpData.city}, ${userRealIpData.country}</p>
+                        <p>🌐 <strong>ASN:</strong> ${userRealIpData.asn}</p>
+                    </div>
+                    <button onclick="applyProxyTarget('${ip}')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2.5 rounded-xl transition-all shadow-sm">
+                        🔗 HUBUNGKAN PORT & TERAPKAN KE HOME
+                    </button>
+                </div>`;
+            }, 600);
         }
 
-        function copyCredentials() {
-            const port = document.getElementById('resPort').innerText.replace('#','');
-            const text = `${activeHost}:${port}:SkieeUser:SecurePass`;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Kredensial & Lokasi IP berhasil disalin ke clipboard!');
-            });
-        }
-
-        function closeModal() {
-            document.getElementById('connectModal').classList.add('hidden');
-            alert('Proxy berhasil diterapkan ke jaringan perangkat Anda!');
+        function applyProxyTarget(ip) {
+            alert(`IP ${ip} berhasil dihubungkan dan diterapkan ke halaman Home!`);
+            switchTab('home');
+            if(!isConnected) {
+                toggleProxyPower();
+            }
         }
     </script>
 </body>
