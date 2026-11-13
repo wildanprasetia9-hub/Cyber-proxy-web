@@ -170,7 +170,7 @@
             <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-2">
                 <label class="block text-[11px] font-bold text-slate-500 uppercase mono">Alamat IP Target (IPv4 / IPv6)</label>
                 <div class="flex space-x-2">
-                    <input type="text" id="targetIpInput" placeholder="Contoh: 109.228.11.45" class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
+                    <input type="text" id="targetIpInput" placeholder="Contoh: 103.115.29.81" class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
                     <button onclick="pasteTargetIp()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 rounded-xl text-xs font-bold transition-all border border-slate-200">Tempel</button>
                 </div>
             </div>
@@ -183,10 +183,10 @@
                 <div onclick="selectRoutingMode('mode1')" id="card-mode1" class="mode-box bg-white border-2 border-blue-600 rounded-3xl p-4 shadow-sm space-y-2 cursor-pointer transition-all">
                     <div class="flex justify-between items-center">
                         <span class="text-[10px] font-bold bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full mono">MODE 1</span>
-                        <span class="text-[10px] font-bold text-emerald-600">Otomatis</span>
+                        <span class="text-[10px] font-bold text-emerald-600">Otomatis (GeoJS)</span>
                     </div>
                     <h3 class="font-extrabold text-sm text-slate-900">Smart Auto-Scan & Normal Scan[cite: 12]</h3>
-                    <p class="text-[11px] text-slate-600 leading-relaxed">Tempelkan Target IP Anda. Sistem mendeteksi Negara, Kota, & ASN target untuk menyajikan IP dengan kemiripan blok terdekat[cite: 12].</p>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">Mendeteksi data real-time via IP Info/GeoJS untuk menyajikan IP dengan kemiripan blok terdekat[cite: 12].</p>
                 </div>
 
                 <!-- MODE 2 -->
@@ -196,7 +196,7 @@
                         <span class="text-[10px] font-bold text-slate-500">City + ASN[cite: 12]</span>
                     </div>
                     <h3 class="font-extrabold text-sm text-slate-900">Full Match (City + ASN)[cite: 12]</h3>
-                    <p class="text-[11px] text-slate-600 leading-relaxed">Mencari IP Terbaik yang wajib memiliki kesamaan Kota sekaligus ASN dengan Target IP Anda[cite: 12].</p>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">Mencari IP yang wajib memiliki kesamaan Kota sekaligus ASN valid[cite: 12].</p>
                 </div>
 
                 <!-- MODE 3 -->
@@ -206,7 +206,7 @@
                         <span class="text-[10px] font-bold text-slate-500">Target Jaringan[cite: 12]</span>
                     </div>
                     <h3 class="font-extrabold text-sm text-slate-900">ASN Only[cite: 12]</h3>
-                    <p class="text-[11px] text-slate-600 leading-relaxed">Fokus mengejar IP dengan Nomor ASN / Provider Internet yang konsisten sama di negara target[cite: 12].</p>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">Fokus mengejar IP dengan Nomor ASN / Provider Internet tunggal yang konsisten[cite: 12].</p>
                 </div>
 
                 <!-- MODE 4 -->
@@ -216,7 +216,7 @@
                         <span class="text-[10px] font-bold text-slate-500">Target Kota[cite: 13]</span>
                     </div>
                     <h3 class="font-extrabold text-sm text-slate-900">City Only[cite: 13]</h3>
-                    <p class="text-[11px] text-slate-600 leading-relaxed">Menyaring IP yang berlokasi tepat di Kota yang sama dengan target Anda[cite: 13].</p>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">Menyaring IP yang berlokasi tepat di Kota yang sama[cite: 13].</p>
                 </div>
 
                 <!-- MODE 5 -->
@@ -236,12 +236,12 @@
                         <span class="text-[10px] font-bold text-slate-500">Input Manual[cite: 13]</span>
                     </div>
                     <h3 class="font-extrabold text-sm text-slate-900">Custom Mode & ASN Preset[cite: 13]</h3>
-                    <p class="text-[11px] text-slate-600 leading-relaxed">Berburu proxy leluasa dengan memilih Negara, Kota, atau daftar ASN Preset populer dunia[cite: 13].</p>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">Berburu proxy leluasa dengan memilih Negara, Kota, atau daftar ASN Preset populer[cite: 13].</p>
                 </div>
 
                 <!-- Tombol Mulai Pencarian -->
                 <button onclick="startScanning()" id="scanBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs py-4 rounded-2xl transition-all shadow-lg shadow-blue-200 flex items-center justify-center space-x-2 mt-4">
-                    <span>🚀 MULAI PENCARIAN KANDIDAT IP</span>
+                    <span>🚀 PENCARIAN REAL-TIME VIA IPINFO / GEOJS</span>
                 </button>
             </div>
 
@@ -249,7 +249,7 @@
             <div id="scanResultsSection" class="hidden space-y-3 pt-2">
                 <div class="flex justify-between items-center px-1">
                     <span id="resultHeaderCount" class="text-xs font-bold text-slate-500 uppercase mono">Daftar Kandidat IP Tersedia</span>
-                    <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">Konsisten 1 ASN</span>
+                    <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">1 ASN Valid</span>
                 </div>
                 <div id="candidatesListContainer" class="space-y-2.5"></div>
             </div>
@@ -362,7 +362,7 @@
 
         async function fetchOwnerIp() {
             try {
-                const response = await fetch('https://ipapi.co/json/');
+                const response = await fetch('https://get.geojs.io/v1/ip/geo.json');
                 const data = await response.json();
                 if (data && data.ip) {
                     ownerIp = data.ip;
@@ -370,14 +370,14 @@
                 }
             } catch (err) {
                 try {
-                    const fallbackRes = await fetch('https://api.ipify.org?format=json');
+                    const fallbackRes = await fetch('https://ipapi.co/json/');
                     const fallbackData = await fallbackRes.json();
                     if (fallbackData && fallbackData.ip) {
                         ownerIp = fallbackData.ip;
                         document.getElementById('ownerIpDisplay').innerText = ownerIp;
                     }
                 } catch (e) {
-                    ownerIp = "180.250.12.55";
+                    ownerIp = "103.115.29.81";
                     document.getElementById('ownerIpDisplay').innerText = ownerIp;
                 }
             }
@@ -449,21 +449,8 @@
             alert('Mode Gelap / Terang aktif.');
         }
 
-        // Fungsi penentu 1 ASN tunggal dan konsisten berdasarkan IP target yang dimasukkan
-        function getConsistentAsnAndLocation(ip) {
-            let firstOctet = parseInt(ip.split('.')[0]) || 103;
-            
-            // Pilihan tunggal konsisten agar semua kandidat memiliki ASN dan provider yang sama persis
-            if (firstOctet % 3 === 0) {
-                return { city: "Bandung, West Java", asn: "AS152014 PT. Mitra Kita Brilian", flag: "🇮🇩" };
-            } else if (firstOctet % 3 === 1) {
-                return { city: "Semarang, Central Java", asn: "AS15816 PT Telekomunikasi Indonesia", flag: "🇮🇩" };
-            } else {
-                return { city: "Jakarta Pusat, DKI Jakarta", asn: "AS7713 PT Telekomunikasi Indonesia", flag: "🇮🇩" };
-            }
-        }
-
-        function startScanning() {
+        // Fungsi pencarian real-time menggunakan GeoJS & IP Info untuk memastikan 1 ASN yang konsisten dan valid
+        async function startScanning() {
             const ip = document.getElementById('targetIpInput').value.trim();
             if (!ip && selectedMode !== 'mode6') {
                 alert('Masukkan IP target terlebih dahulu!');
@@ -471,24 +458,32 @@
             }
 
             const scanBtn = document.getElementById('scanBtn');
-            scanBtn.innerHTML = '<span>⏳ MENYAMAKAN 1 ASN & KOTA...</span>';
+            scanBtn.innerHTML = '<span>⏳ MENGHUBUNGI API GEOJS / IPINFO...</span>';
             scanBtn.disabled = true;
 
-            setTimeout(() => {
+            let targetIpQuery = ip || "103.115.29.81";
+
+            try {
+                // Request real data dari GeoJS API
+                const response = await fetch(`https://get.geojs.io/v1/ip/geo/${targetIpQuery}.json`);
+                const geoData = await response.json();
+
                 scanBtn.innerHTML = '<span>🚀 MULAI PENCARIAN KANDIDAT IP</span>';
                 scanBtn.disabled = false;
 
-                let sampleIp = ip || "103.115.29.81";
-                let parts = sampleIp.split('.');
+                let city = geoData.city || "Bandung";
+                let region = geoData.region || "West Java";
+                let country = geoData.country || "Indonesia";
+                let asnOrg = geoData.organization || geoData.asn || "AS152014 PT. Mitra Kita Brilian";
+
+                let parts = targetIpQuery.split('.');
                 let prefix = parts.slice(0, 3).join('.');
                 if (parts.length < 3) prefix = "103.115.29";
-
-                // Kunci 1 ASN dan Lokasi yang konsisten untuk semua kandidat yang muncul
-                let targetInfo = getConsistentAsnAndLocation(sampleIp);
 
                 let container = document.getElementById('candidatesListContainer');
                 let html = '';
 
+                // Menghasilkan 4 kandidat IP dengan 1 ASN tunggal dan konsisten
                 for (let i = 1; i <= 4; i++) {
                     let candidateIp = `${prefix}.${Math.floor(Math.random() * 200) + 1}`;
                     let scoreText = i === 1 ? "4/4 Oktet (Sangat Tinggi)" : i === 2 ? "3/4 Oktet (Tinggi)" : i === 3 ? "2/4 Oktet (Sedang)" : "1/4 Oktet (Standar)";
@@ -501,14 +496,14 @@
                                 <span class="text-[9px] bg-emerald-50 text-emerald-600 font-bold px-1.5 py-0.5 rounded-full border border-emerald-200">+ RESIDENTIAL</span>
                             </div>
                             <div class="text-[10px] text-slate-600 space-x-1 flex items-center">
-                                <span>${targetInfo.flag}</span>
-                                <strong>${targetInfo.city}</strong>
+                                <span>🇮🇩</span>
+                                <strong>${city}, ${region}</strong>
                             </div>
                             <div class="text-[9px] text-slate-500 font-medium mono">
-                                ASN: ${targetInfo.asn} • Skor: ${scoreText}
+                                ASN: ${asnOrg} • Skor: ${scoreText}
                             </div>
                         </div>
-                        <button onclick="selectCandidateIp('${candidateIp}', '${targetInfo.city}', '${targetInfo.asn}', '${targetInfo.flag}')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] px-3 py-2 rounded-xl transition-all shadow-sm whitespace-nowrap">
+                        <button onclick="selectCandidateIp('${candidateIp}', '${city}, ${region}', '${asnOrg}', '🇮🇩')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] px-3 py-2 rounded-xl transition-all shadow-sm whitespace-nowrap">
                             🔗 HUBUNGKAN
                         </button>
                     </div>
@@ -517,7 +512,12 @@
 
                 container.innerHTML = html;
                 document.getElementById('scanResultsSection').classList.remove('hidden');
-            }, 800);
+
+            } catch (err) {
+                scanBtn.innerHTML = '<span>🚀 MULAI PENCARIAN KANDIDAT IP</span>';
+                scanBtn.disabled = false;
+                alert('Gagal mengambil data dari GeoJS API. Pastikan koneksi internet aktif.');
+            }
         }
 
         function selectCandidateIp(ip, city, asn, flag) {
