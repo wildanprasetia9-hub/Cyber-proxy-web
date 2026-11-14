@@ -167,24 +167,27 @@
             <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-2">
                 <label class="block text-[11px] font-bold text-slate-500 uppercase mono">ALAMAT IP TARGET (IPv4 / IPv6)</label>
                 <div class="flex space-x-2">
-                    <input type="text" id="targetIpInput" placeholder="Contoh: 2001:448a:20a0:e049:75a3:8bf6:2c75:3bf" class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
+                    <input type="text" id="targetIpInput" placeholder="Contoh: 103.188.169.96" class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
                     <button onclick="pasteTargetIp()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 rounded-xl text-xs font-bold transition-all border border-slate-200">Tempel</button>
                 </div>
             </div>
 
-            <!-- Pilih Mode Hunting -->
-            <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-2">
+            <!-- Pilih Mode Hunting (Bisa Diklik / Dipilih) -->
+            <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-2.5">
                 <div class="flex justify-between items-center">
                     <label class="text-[11px] font-bold text-slate-500 uppercase mono">PILIH MODE HUNTING</label>
-                    <button onclick="alert('Pilih mode hunting untuk mencocokkan parameter routing.')" class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-1 rounded-lg border border-blue-100">⚙️ Penjelasan Mode</button>
+                    <button onclick="showModeInfo()" class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-1 rounded-lg border border-blue-100">⚙️ Penjelasan Mode</button>
                 </div>
-                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 flex items-center justify-between cursor-pointer" onclick="alert('Mode aktif: ULTIMATE AUTO')">
-                    <div>
-                        <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">REKOMENDASI</span>
-                        <p class="font-extrabold text-xs text-slate-800 mt-1">ULTIMATE AUTO (Peringkat Cerdas & Jarak)</p>
-                        <p class="text-[10px] text-slate-500">Otomatis mencari kemiripan oktet tertinggi & jarak terdekat dari IP Target</p>
-                    </div>
-                    <span class="text-slate-400 text-sm">▼</span>
+
+                <div class="relative">
+                    <select id="huntingModeSelect" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500 appearance-none cursor-pointer">
+                        <option value="ultimate">⭐ ULTIMATE AUTO (Peringkat Cerdas & Jarak)</option>
+                        <option value="fullmatch">🎯 FULL MATCH (City + ASN Presisi Tinggi)</option>
+                        <option value="asnonly">🌐 ASN ONLY (Fokus Target Jaringan)</option>
+                        <option value="cityonly">🏙️ CITY ONLY (Fokus Target Kota)</option>
+                        <option value="countryonly">🌍 COUNTRY ONLY (Skala Negara)</option>
+                    </select>
+                    <div class="absolute right-4 top-4 text-slate-400 pointer-events-none text-xs">▼</div>
                 </div>
             </div>
 
@@ -193,7 +196,7 @@
                 <span>🚀 MULAI PENCARIAN</span>
             </button>
 
-            <!-- Hasil Kandidat IP Sesuai Video -->
+            <!-- Hasil Kandidat IP -->
             <div id="scanResultsSection" class="hidden space-y-3 pt-2">
                 <div class="flex justify-between items-center px-1">
                     <span class="text-xs font-bold text-slate-500 uppercase mono">DAFTAR KANDIDAT IP TERSEDIA</span>
@@ -227,7 +230,7 @@
         </div>
 
 
-        <!-- ================= TAB 4: AKUN (KOSONG SEBELUM LOGIN) ================= -->
+        <!-- ================= TAB 4: AKUN ================= -->
         <div id="tab-akun" class="tab-content max-w-md w-full mx-auto p-4 space-y-4 hidden">
             <!-- Profil Pelanggan Grid Card -->
             <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-3.5">
@@ -297,7 +300,7 @@
         </div>
 
 
-        <!-- ================= FLOATING WHATSAPP & TELEGRAM BUTTON ================= -->
+        <!-- ================= FLOATING BUTTON ================= -->
         <div class="fixed bottom-20 right-4 z-40 flex flex-col space-y-2">
             <a href="https://t.me/" target="_blank" class="w-11 h-11 bg-sky-500 hover:bg-sky-600 text-white rounded-full flex items-center justify-center shadow-lg transition-all text-lg font-bold" title="Telegram Support">✈</a>
             <a href="https://wa.me/6285157631122" target="_blank" class="w-12 h-12 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-lg transition-all text-xl" title="WhatsApp Support">💬</a>
@@ -409,6 +412,10 @@
             alert('Mode Gelap / Terang aktif.');
         }
 
+        function showModeInfo() {
+            alert("Informasi Mode Hunting:\n\n• Ultimate Auto: Peringkat cerdas berdasarkan kemiripan oktet & jarak terdekat.\n• Full Match: Kesesuaian ketat Kota + ASN.\n• ASN Only & City Only: Penyaringan spesifik jaringan/kota.");
+        }
+
         function whitelistMyIp() {
             alert(`IP ${ownerIp} berhasil di-whitelist ke server proxy!`);
         }
@@ -417,7 +424,7 @@
             alert('Jalur port berhasil disegarkan! Soket lama dibersihkan dan IP tetap sama.');
         }
 
-        // Pencarian kandidat IP sesuai video (format oktet bertahap & tombol hubungkan khusus)
+        // Pencarian kandidat IP dinamis
         async function startScanning() {
             const ip = document.getElementById('targetIpInput').value.trim();
             if (!ip) {
@@ -448,7 +455,6 @@
                 let container = document.getElementById('candidatesListContainer');
                 let html = '';
                 
-                // Variasi oktet akhir agar mirip dengan video referensi
                 let ipList = [
                     ip,
                     ip.split('.').slice(0,3).join('.') + '.34',
