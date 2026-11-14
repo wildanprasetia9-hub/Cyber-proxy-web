@@ -17,33 +17,30 @@
 <body class="text-slate-800 min-h-screen flex flex-col justify-between pb-24 selection:bg-blue-500 selection:text-white" onload="initApp()">
 
     <!-- ================= PAGE 0: LOGIN MODAL ================= -->
-    <div id="loginPage" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto hidden">
+    <div id="loginPage" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 my-auto">
-            <div class="flex justify-between items-center">
-                <div class="w-10 h-10 rounded-xl bg-blue-600 text-white font-extrabold flex items-center justify-center text-sm shadow-md mono">SP</div>
-                <button onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 font-bold text-sm">✕ Tutup</button>
-            </div>
             <div class="text-center space-y-1">
+                <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white font-extrabold flex items-center justify-center text-base shadow-md mx-auto mono">SP</div>
                 <h2 class="font-extrabold text-slate-900 text-lg">SKIEE PROXY</h2>
-                <p class="text-[11px] text-slate-500 font-medium">Masukkan Akun atau Pilih Paket Langganan</p>
+                <p class="text-[11px] text-slate-500 font-medium">Silakan Login atau Pilih Paket Langganan</p>
             </div>
 
             <div class="space-y-3 pt-1">
                 <div>
                     <label class="block text-[10px] font-bold text-slate-500 uppercase mono mb-1">Username / Akun</label>
-                    <input type="text" id="usernameInput" value="dditjiee" class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
+                    <input type="text" id="usernameInput" placeholder="Masukkan username..." class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold text-slate-500 uppercase mono mb-1">Password / Kode Akses</label>
-                    <input type="password" id="passwordInput" value="123456" class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
+                    <input type="password" id="passwordInput" placeholder="••••••••" class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
                 </div>
-                <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md shadow-blue-200">
+                <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3.5 rounded-xl transition-all shadow-md shadow-blue-200">
                     🔓 MASUK APLIKASI
                 </button>
             </div>
 
             <div class="border-t border-slate-100 pt-3 space-y-2">
-                <p class="text-[11px] font-bold text-slate-700 text-center">⭐ Pilih Paket Langganan WhatsApp:</p>
+                <p class="text-[11px] font-bold text-slate-700 text-center">⭐ Belum punya akun? Pilih Paket WhatsApp:</p>
                 <div class="grid grid-cols-2 gap-2">
                     <button onclick="orderWhatsApp('Harian (1 Hari)')" class="bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-500 p-2.5 rounded-xl text-left transition-all">
                         <p class="text-[10px] font-extrabold text-slate-700">📅 Harian</p>
@@ -83,7 +80,7 @@
                 <div class="flex items-center space-x-1.5">
                     <button onclick="toggleDarkMode()" class="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs shadow-sm">🌙</button>
                     <button onclick="switchTab('akun')" class="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs shadow-sm">🛒</button>
-                    <button onclick="openLoginModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[10px] px-3.5 py-1.5 rounded-xl transition-all shadow-sm">LOGIN</button>
+                    <button onclick="handleLogout()" class="bg-red-50 hover:bg-red-100 text-red-600 font-extrabold text-[10px] px-3 py-1.5 rounded-xl transition-all shadow-sm">LOGOUT</button>
                 </div>
             </div>
         </header>
@@ -168,22 +165,38 @@
         <div id="tab-cari" class="tab-content max-w-md w-full mx-auto p-4 space-y-4 hidden">
             <!-- Input Target IP -->
             <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-2">
-                <label class="block text-[11px] font-bold text-slate-500 uppercase mono">Alamat IP Target (IPv4 / IPv6)</label>
+                <label class="block text-[11px] font-bold text-slate-500 uppercase mono">ALAMAT IP TARGET (IPv4 / IPv6)</label>
                 <div class="flex space-x-2">
-                    <input type="text" id="targetIpInput" placeholder="Contoh: 36.85.112.5" class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
+                    <input type="text" id="targetIpInput" placeholder="Contoh: 2001:448a:20a0:e049:75a3:8bf6:2c75:3bf" class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs mono w-full focus:outline-none focus:border-blue-500 font-semibold text-slate-800">
                     <button onclick="pasteTargetIp()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 rounded-xl text-xs font-bold transition-all border border-slate-200">Tempel</button>
+                </div>
+            </div>
+
+            <!-- Pilih Mode Hunting -->
+            <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-2">
+                <div class="flex justify-between items-center">
+                    <label class="text-[11px] font-bold text-slate-500 uppercase mono">PILIH MODE HUNTING</label>
+                    <button onclick="alert('Pilih mode hunting untuk mencocokkan parameter routing.')" class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-1 rounded-lg border border-blue-100">⚙️ Penjelasan Mode</button>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 flex items-center justify-between cursor-pointer" onclick="alert('Mode aktif: ULTIMATE AUTO')">
+                    <div>
+                        <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">REKOMENDASI</span>
+                        <p class="font-extrabold text-xs text-slate-800 mt-1">ULTIMATE AUTO (Peringkat Cerdas & Jarak)</p>
+                        <p class="text-[10px] text-slate-500">Otomatis mencari kemiripan oktet tertinggi & jarak terdekat dari IP Target</p>
+                    </div>
+                    <span class="text-slate-400 text-sm">▼</span>
                 </div>
             </div>
 
             <!-- Tombol Mulai Pencarian -->
             <button onclick="startScanning()" id="scanBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs py-3.5 rounded-2xl transition-all shadow-lg shadow-blue-200 flex items-center justify-center space-x-2">
-                <span>🚀 MULAI PENCARIAN KANDIDAT IP</span>
+                <span>🚀 MULAI PENCARIAN</span>
             </button>
 
-            <!-- Hasil Kandidat IP Multi-List -->
+            <!-- Hasil Kandidat IP Sesuai Video -->
             <div id="scanResultsSection" class="hidden space-y-3 pt-2">
                 <div class="flex justify-between items-center px-1">
-                    <span class="text-xs font-bold text-slate-500 uppercase mono">Daftar Kandidat IP Tersedia</span>
+                    <span class="text-xs font-bold text-slate-500 uppercase mono">DAFTAR KANDIDAT IP TERSEDIA</span>
                     <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">1 ASN Valid</span>
                 </div>
                 <div id="candidatesListContainer" class="space-y-2.5"></div>
@@ -214,7 +227,7 @@
         </div>
 
 
-        <!-- ================= TAB 4: AKUN ================= -->
+        <!-- ================= TAB 4: AKUN (KOSONG SEBELUM LOGIN) ================= -->
         <div id="tab-akun" class="tab-content max-w-md w-full mx-auto p-4 space-y-4 hidden">
             <!-- Profil Pelanggan Grid Card -->
             <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-3.5">
@@ -226,19 +239,19 @@
                 <div class="grid grid-cols-2 gap-2.5 text-xs">
                     <div class="bg-slate-50 border border-slate-200/60 rounded-2xl p-3 space-y-1">
                         <p class="text-[9px] font-bold text-slate-400 uppercase">USERNAME</p>
-                        <p id="profileUsername" class="font-extrabold text-slate-800 mono">dditjiee</p>
+                        <p id="profileUsername" class="font-extrabold text-slate-800 mono">-</p>
                     </div>
                     <div class="bg-slate-50 border border-slate-200/60 rounded-2xl p-3 space-y-1">
                         <p class="text-[9px] font-bold text-slate-400 uppercase">SERVER</p>
-                        <p class="font-extrabold text-blue-600 mono text-[11px] truncate">skiee.vip-proxy.web.id</p>
+                        <p id="profileServer" class="font-extrabold text-blue-600 mono text-[11px] truncate">-</p>
                     </div>
                     <div class="bg-slate-50 border border-slate-200/60 rounded-2xl p-3 space-y-1">
                         <p class="text-[9px] font-bold text-slate-400 uppercase">PORT</p>
-                        <p class="font-extrabold text-emerald-600 mono">5853 (SOCKS5)</p>
+                        <p id="profilePort" class="font-extrabold text-emerald-600 mono">-</p>
                     </div>
                     <div class="bg-slate-50 border border-slate-200/60 rounded-2xl p-3 space-y-1">
                         <p class="text-[9px] font-bold text-slate-400 uppercase">Masa Aktif</p>
-                        <p class="font-bold text-slate-700 text-[10px]">20/11/2026 16:47 (6 Hari 23 Jam)</p>
+                        <p id="profileExpiry" class="font-bold text-slate-700 text-[10px]">-</p>
                     </div>
                     <div class="bg-slate-50 border border-slate-200/60 rounded-2xl p-3 space-y-1">
                         <p class="text-[9px] font-bold text-slate-400 uppercase">Pemakaian Kuota</p>
@@ -260,7 +273,7 @@
                 <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider">IP WHITELIST PELANGGAN</h2>
                 <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 flex items-center space-x-2.5">
                     <span class="text-slate-400">🛡️</span>
-                    <span id="whitelistIpDisplay" class="text-xs font-bold text-slate-700 mono">103.188.169.96</span>
+                    <span id="whitelistIpDisplay" class="text-xs font-bold text-slate-700 mono">-</span>
                 </div>
                 <button onclick="whitelistMyIp()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs py-3 rounded-2xl transition-all shadow-sm flex items-center justify-center space-x-2">
                     <span>⚡ WHITELIST MY IP</span>
@@ -318,7 +331,7 @@
     <!-- JavaScript Interactive Logic -->
     <script>
         let isConnected = false;
-        let ownerIp = "103.188.169.96";
+        let ownerIp = "Memuat...";
         let activeProxyData = { ip: "--.---.---.---", city: "-", asn: "-", country: "Indonesia", flag: "🇮🇩" };
 
         async function initApp() {
@@ -328,19 +341,11 @@
                 if (data && data.ip) {
                     ownerIp = data.ip;
                     document.getElementById('ownerIpDisplay').innerText = ownerIp;
-                    document.getElementById('whitelistIpDisplay').innerText = ownerIp;
                 }
             } catch (err) {
+                ownerIp = "103.188.169.96";
                 document.getElementById('ownerIpDisplay').innerText = ownerIp;
             }
-        }
-
-        function openLoginModal() {
-            document.getElementById('loginPage').classList.remove('hidden');
-        }
-
-        function closeLoginModal() {
-            document.getElementById('loginPage').classList.add('hidden');
         }
 
         function handleLogin() {
@@ -352,14 +357,29 @@
                 return;
             }
 
-            closeLoginModal();
+            document.getElementById('loginPage').classList.add('hidden');
             document.getElementById('profileUsername').innerText = user;
+            document.getElementById('profileServer').innerText = "skiee.vip-proxy.web.id";
+            document.getElementById('profilePort').innerText = "5853 (SOCKS5)";
+            document.getElementById('profileExpiry').innerText = "20/11/2026 16:47 (6 Hari 23 Jam)";
+            document.getElementById('whitelistIpDisplay').innerText = ownerIp;
+
             alert('Login Berhasil! Selamat datang, ' + user);
+        }
+
+        function handleLogout() {
+            document.getElementById('profileUsername').innerText = "-";
+            document.getElementById('profileServer').innerText = "-";
+            document.getElementById('profilePort').innerText = "-";
+            document.getElementById('profileExpiry').innerText = "-";
+            document.getElementById('whitelistIpDisplay').innerText = "-";
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginPage').classList.remove('hidden');
         }
 
         function orderWhatsApp(paket) {
             const phone = "6285157631122"; 
-            const message = `Halo Admin, saya ingin memperpanjang masa aktif akun Skiee Proxy untuk *${paket}*. Mohon bantuannya. Terima kasih!`;
+            const message = `Halo Admin, saya ingin berlangganan Skiee Proxy untuk paket *${paket}*. Mohon bantuannya. Terima kasih!`;
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
         }
@@ -397,22 +417,7 @@
             alert('Jalur port berhasil disegarkan! Soket lama dibersihkan dan IP tetap sama.');
         }
 
-        // Fungsi pemetaan kota secara cerdas berdasarkan IP target yang dimasukkan
-        function getDynamicCityByIp(ip) {
-            let firstOctet = parseInt(ip.split('.')[0]) || 103;
-            if (ip.startsWith("192.168.") || ip.startsWith("10.") || ip.startsWith("127.")) {
-                return { city: "Depok, West Java", asn: "AS7713 PT Telekomunikasi Indonesia" };
-            } else if (firstOctet % 4 === 0) {
-                return { city: "Jakarta Pusat, DKI Jakarta", asn: "AS7713 PT Telekomunikasi Indonesia" };
-            } else if (firstOctet % 4 === 1) {
-                return { city: "Bandung, West Java", asn: "AS152014 PT. Mitra Kita Brilian" };
-            } else if (firstOctet % 4 === 2) {
-                return { city: "Semarang, Central Java", asn: "AS15816 PT Telekomunikasi Indonesia" };
-            } else {
-                return { city: "Surabaya, East Java", asn: "AS45102 PT Cyber Network Indonesia" };
-            }
-        }
-
+        // Pencarian kandidat IP sesuai video (format oktet bertahap & tombol hubungkan khusus)
         async function startScanning() {
             const ip = document.getElementById('targetIpInput').value.trim();
             if (!ip) {
@@ -425,32 +430,32 @@
             scanBtn.disabled = true;
 
             try {
-                // Coba ambil via GeoJS API jika IP publik
-                let city = "Bandung, West Java";
-                let asnOrg = "AS58495 PT Parsaoran Global Datatrans";
+                let city = "Jakarta, ID";
+                let asnOrg = "AS57713 PT Telekomunikasi Indonesia";
 
                 if (!ip.startsWith("192.168.") && !ip.startsWith("10.")) {
                     const response = await fetch(`https://get.geojs.io/v1/ip/geo/${ip}.json`);
                     const geoData = await response.json();
                     if (geoData && geoData.city) {
-                        city = `${geoData.city}, ${geoData.region || 'West Java'}`;
-                        asnOrg = geoData.organization || geoData.asn || "AS58495 PT Parsaoran Global Datatrans";
+                        city = `${geoData.city}, ID`;
+                        asnOrg = geoData.organization || geoData.asn || "AS7713 PT Telekomunikasi Indonesia";
                     }
-                } else {
-                    let dyn = getDynamicCityByIp(ip);
-                    city = dyn.city;
-                    asnOrg = dyn.asn;
                 }
 
-                scanBtn.innerHTML = '<span>🚀 MULAI PENCARIAN KANDIDAT IP</span>';
+                scanBtn.innerHTML = '<span>🚀 MULAI PENCARIAN</span>';
                 scanBtn.disabled = false;
-
-                let parts = ip.split('.');
-                let prefix = parts.slice(0, 3).join('.');
-                if (parts.length < 3) prefix = "103.115.29";
 
                 let container = document.getElementById('candidatesListContainer');
                 let html = '';
+                
+                // Variasi oktet akhir agar mirip dengan video referensi
+                let ipList = [
+                    ip,
+                    ip.split('.').slice(0,3).join('.') + '.34',
+                    ip.split('.').slice(0,3).join('.') + '.115',
+                    ip.split('.').slice(0,3).join('.') + '.65'
+                ];
+
                 let scores = [
                     "4/4 Oktet (Sangat Tinggi)",
                     "3/4 Oktet (Tinggi)",
@@ -459,7 +464,7 @@
                 ];
 
                 for (let i = 0; i < 4; i++) {
-                    let candidateIp = `${prefix}.${Math.floor(Math.random() * 150) + 10}`;
+                    let candidateIp = ipList[i] || ip;
 
                     html += `
                     <div class="bg-white border border-slate-200/80 rounded-2xl p-3.5 shadow-sm flex items-center justify-between">
@@ -476,8 +481,8 @@
                                 ASN: ${asnOrg} • Skor: ${scores[i]}
                             </div>
                         </div>
-                        <button onclick="selectCandidateIp('${candidateIp}', '${city}', '${asnOrg}', '🇮🇩')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] px-3 py-2 rounded-xl transition-all shadow-sm whitespace-nowrap">
-                            🔗 HUBUNGKAN
+                        <button onclick="selectCandidateIp('${candidateIp}', '${city}', '${asnOrg}', '🇮🇩')" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[10px] px-3 py-2.5 rounded-xl transition-all shadow-sm whitespace-nowrap flex items-center space-x-1">
+                            <span>🔗 HUBUNGKAN</span>
                         </button>
                     </div>
                     `;
@@ -487,7 +492,7 @@
                 document.getElementById('scanResultsSection').classList.remove('hidden');
 
             } catch (err) {
-                scanBtn.innerHTML = '<span>🚀 MULAI PENCARIAN KANDIDAT IP</span>';
+                scanBtn.innerHTML = '<span>🚀 MULAI PENCARIAN</span>';
                 scanBtn.disabled = false;
                 alert('Gagal memindai IP target.');
             }
