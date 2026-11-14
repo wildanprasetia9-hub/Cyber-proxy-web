@@ -172,7 +172,7 @@
                 </div>
             </div>
 
-            <!-- Pilih Mode Hunting (Bisa Diklik / Dipilih) -->
+            <!-- Pilih Mode Hunting Interaktif -->
             <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-sm space-y-2.5">
                 <div class="flex justify-between items-center">
                     <label class="text-[11px] font-bold text-slate-500 uppercase mono">PILIH MODE HUNTING</label>
@@ -199,7 +199,7 @@
             <!-- Hasil Kandidat IP -->
             <div id="scanResultsSection" class="hidden space-y-3 pt-2">
                 <div class="flex justify-between items-center px-1">
-                    <span class="text-xs font-bold text-slate-500 uppercase mono">DAFTAR KANDIDAT IP TERSEDIA</span>
+                    <span id="resultHeaderLabel" class="text-xs font-bold text-slate-500 uppercase mono">DAFTAR KANDIDAT IP TERSEDIA</span>
                     <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">1 ASN Valid</span>
                 </div>
                 <div id="candidatesListContainer" class="space-y-2.5"></div>
@@ -408,12 +408,8 @@
             });
         }
 
-        function toggleDarkMode() {
-            alert('Mode Gelap / Terang aktif.');
-        }
-
         function showModeInfo() {
-            alert("Informasi Mode Hunting:\n\n• Ultimate Auto: Peringkat cerdas berdasarkan kemiripan oktet & jarak terdekat.\n• Full Match: Kesesuaian ketat Kota + ASN.\n• ASN Only & City Only: Penyaringan spesifik jaringan/kota.");
+            alert("Panduan Mode Hunting:\n\n• Ultimate Auto: Peringkat cerdas berdasarkan kemiripan oktet & jarak terdekat.\n• Full Match: Kesesuaian ketat Kota + ASN.\n• ASN Only: Fokus pada penyedia jaringan yang sama.\n• City Only: Menyaring IP tepat di kota yang sama.\n• Country Only: Jangkauan luas skala negara.");
         }
 
         function whitelistMyIp() {
@@ -424,16 +420,18 @@
             alert('Jalur port berhasil disegarkan! Soket lama dibersihkan dan IP tetap sama.');
         }
 
-        // Pencarian kandidat IP dinamis
+        // Pencarian kandidat IP yang merespons pilihan Mode Hunting secara dinamis
         async function startScanning() {
             const ip = document.getElementById('targetIpInput').value.trim();
+            const modeVal = document.getElementById('huntingModeSelect').value;
+
             if (!ip) {
                 alert('Masukkan IP target terlebih dahulu!');
                 return;
             }
 
             const scanBtn = document.getElementById('scanBtn');
-            scanBtn.innerHTML = '<span>⏳ MEMINDAI GEOLOKASI TARGET...</span>';
+            scanBtn.innerHTML = '<span>⏳ MEMINDAI DENGAN MODE ' + modeVal.toUpperCase() + '...</span>';
             scanBtn.disabled = true;
 
             try {
@@ -445,7 +443,7 @@
                     const geoData = await response.json();
                     if (geoData && geoData.city) {
                         city = `${geoData.city}, ID`;
-                        asnOrg = geoData.organization || geoData.asn || "AS7713 PT Telekomunikasi Indonesia";
+                        asnOrg = geoData.organization || geoData.asn || "AS57713 PT Telekomunikasi Indonesia";
                     }
                 }
 
@@ -462,12 +460,28 @@
                     ip.split('.').slice(0,3).join('.') + '.65'
                 ];
 
-                let scores = [
-                    "4/4 Oktet (Sangat Tinggi)",
-                    "3/4 Oktet (Tinggi)",
-                    "2/4 Oktet (Sedang)",
-                    "1/4 Oktet (Standar)"
-                ];
+                // Menyesuaikan teks skor atau label berdasarkan mode yang dipilih
+                let scores = [];
+                let modeLabelText = "DAFTAR KANDIDAT IP TERSEDIA (ULTIMATE)";
+
+                if (modeVal === 'ultimate') {
+                    scores = ["4/4 Oktet (Sangat Tinggi)", "3/4 Oktet (Tinggi)", "2/4 Oktet (Sedang)", "1/4 Oktet (Standar)"];
+                    modeLabelText = "HASIL HUNTING: ULTIMATE AUTO";
+                } else if (modeVal === 'fullmatch') {
+                    scores = ["100% Match (City + ASN)", "95% Match (City + ASN)", "88% Match (City + ASN)", "75% Match (City + ASN)"];
+                    modeLabelText = "HASIL HUNTING: FULL MATCH (CITY + ASN)";
+                } else if (modeVal === 'asnonly') {
+                    scores = ["Match ASN Persis", "Match ASN Sekitar", "Match Jaringan V1", "Match Jaringan V2"];
+                    modeLabelText = "HASIL HUNTING: ASN ONLY";
+                } else if (modeVal === 'cityonly') {
+                    scores = ["Kota Presisi Tinggi", "Kota Radius Dekat", "Kota Regional", "Area Sekitar Kota"];
+                    modeLabelText = "HASIL HUNTING: CITY ONLY";
+                } else {
+                    scores = ["Nasional Tier-1", "Nasional Tier-2", "Nasional Tier-3", "Nasional Umum"];
+                    modeLabelText = "HASIL HUNTING: COUNTRY ONLY";
+                }
+
+                document.getElementById('resultHeaderLabel').innerText = modeLabelText;
 
                 for (let i = 0; i < 4; i++) {
                     let candidateIp = ipList[i] || ip;
@@ -484,7 +498,7 @@
                                 <strong>${city}</strong>
                             </div>
                             <div class="text-[9px] text-slate-500 font-medium mono">
-                                ASN: ${asnOrg} • Skor: ${scores[i]}
+                                ASN: ${asnOrg} • ${scores[i]}
                             </div>
                         </div>
                         <button onclick="selectCandidateIp('${candidateIp}', '${city}', '${asnOrg}', '🇮🇩')" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[10px] px-3 py-2.5 rounded-xl transition-all shadow-sm whitespace-nowrap flex items-center space-x-1">
